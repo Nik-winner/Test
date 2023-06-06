@@ -16,7 +16,7 @@ body {
   border: 1px solid white;
   display: flex;
   flex-direction: column;
-  height: 38vh;
+  height: 40vh;
   width: 30vw;
   background-color: rgb(73, 64, 123);
 }
@@ -32,7 +32,7 @@ body {
 }
 
 .text {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   margin-bottom: 8px;
 }
 
@@ -46,6 +46,7 @@ input {
   background-color: rgb(63, 59, 98);
   border: 1px solid rgb(175, 166, 255);
   height: 3vh;
+  outline: none;
 }
 
 .container_img {
@@ -62,4 +63,7 @@ input {
   border: 1px solid rgb(175, 166, 255);
   height: 3vh;
   color: white;
+  margin: 8px;
+  font-size: 0.9rem;
+  width: 25%;
 }/*# sourceMappingURL=signIn.css.map */

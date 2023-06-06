@@ -3,6 +3,7 @@ const sql = require("sequelize");
 const signInRouter = require("./routes/signInRouter.js");
 const indexRouter = require("./routes/indexRouter.js");
 
+
 const app = exp();
 
 app.set("view engine", "hbs");
@@ -101,6 +102,8 @@ sequelize.sync({alter: true}).then(()=>{
 
 app.use("/sign_in",  signInRouter);
 app.use("/", indexRouter);
+
+// mainUserInf.findOne()
 
 // mainUserInf.create({
 //     logIn: "Bob",
