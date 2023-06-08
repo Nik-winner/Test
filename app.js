@@ -2,7 +2,7 @@ const exp = require("express");
 const sql = require("sequelize");
 const signInRouter = require("./routes/signInRouter.js");
 const indexRouter = require("./routes/indexRouter.js");
-
+// const user = require("./public/JS/signIn.js");
 
 const app = exp();
 
@@ -103,7 +103,14 @@ sequelize.sync({alter: true}).then(()=>{
 app.use("/sign_in",  signInRouter);
 app.use("/", indexRouter);
 
-// mainUserInf.findOne()
+
+async function checkUser(){
+    let login = await fetch("./JS/signIn.js");
+    result = login.json();
+    console.log(result);
+}
+
+checkUser();
 
 // mainUserInf.create({
 //     logIn: "Bob",

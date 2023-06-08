@@ -64,6 +64,7 @@ input {
   height: 3vh;
   color: white;
   margin: 8px;
-  font-size: 0.9rem;
   width: 25%;
+  text-align: center;
+  cursor: default;
 }/*# sourceMappingURL=signIn.css.map */
