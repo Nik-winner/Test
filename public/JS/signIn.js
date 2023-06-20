@@ -5,16 +5,12 @@ let submit = document.querySelector("#submit");
 submit.addEventListener("click", getUsers);
 
 async function getUsers(){
-    fetch("/users", {
+    fetch("http://localhost:3306/pageUsers", {
         method: "GET",
-        headers: {"Accept": "application/json;charset=utf-8"}
+        headers: {"Accept": "application/json;"}
     }).then(res=>{
-        let users = res.json();
-        console.log(users)
+        return res.json();
+    }).then(result=>{
+        console.log(result)
     }).catch(err=>{console.log(err)})
-    // if(resp.ok === true){
-    //     let users = await resp.json();
-    //     console.log(users)
-        
-    // }
 }

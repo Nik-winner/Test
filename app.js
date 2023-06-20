@@ -2,6 +2,7 @@ const exp = require("express");
 const sql = require("sequelize");
 const signInRouter = require("./routes/signInRouter.js");
 const indexRouter = require("./routes/indexRouter.js");
+const pageUsersRouter = require("./routes/pageUsersRouter.js");
 
 const app = exp();
 
@@ -102,6 +103,10 @@ sequelize.sync({alter: true}).then(()=>{
 app.use("/sign_in",  signInRouter);
 app.use("/", indexRouter);
 
+mainUserInf.findAll({raw: true}).then(users=>{
+    app.use("/pageUsers", pageUsersRouter);
+    
+}).catch(err=>{err})
 // mainUserInf.create({
 //     logIn: "Bob",
 //     password: "bob",
