@@ -2,13 +2,13 @@ const exp = require("express");
 const sql = require("sequelize");
 const signInRouter = require("./routes/signInRouter.js");
 const indexRouter = require("./routes/indexRouter.js");
-const pageUsersRouter = require("./routes/pageUsersRouter.js");
+const adminRouter = require("./routes/adminRouter.js");
 
 const app = exp();
 
 app.set("view engine", "hbs");
 app.use(exp.static(__dirname + "/public"));
-// const parser = exp.unlencoded({extended: false});
+const parser = exp.urlencoded({extended: false});
 
 const sequelize = new sql("pokolenie", "root", "Flower_Nerlin", {
     dialect: "mysql",
@@ -102,11 +102,19 @@ sequelize.sync({alter: true}).then(()=>{
 
 app.use("/sign_in",  signInRouter);
 app.use("/", indexRouter);
+// app.use("/admin", adminRouter);
 
-mainUserInf.findAll({raw: true}).then(users=>{
-    app.use("/pageUsers", pageUsersRouter);
-    
-}).catch(err=>{err})
+app.post("/", parser, function(req, res){
+    if(req.body) return res.sendStatus(400);
+    console.log(req.body);
+    app.use("/admin", function(req, res){
+        mainUserInf.findAll({raw: true}).then(data=>{
+            res.render("admin.hbs");
+            
+        }).catch(err=>{console.log(err)})
+    });
+})
+
 // mainUserInf.create({
 //     logIn: "Bob",
 //     password: "bob",

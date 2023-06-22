@@ -51,13 +51,10 @@ input{
 .img{
     height: 100%;
 }
-.button{
-    background-color: rgb(63, 59, 98);
-    border: 1px solid rgb(175 166 255);
-    height: 3vh;
+.submit{
     color: white;
     margin: 8px;
     width: 25%;
-    text-align: center;
-    cursor: default;
+    cursor: pointer;
+    height: 3.5vh;
 }
