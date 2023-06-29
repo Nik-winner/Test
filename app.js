@@ -15,7 +15,7 @@ const sequelize = new sql("pokolenie", "root", "Flower_Nerlin", {
     host: "localhost"
 })
 
-const userInf = sequelize.define("userInf", {
+const userInf = sequelize.define("userInfs", {
     id: {
         type: sql.INTEGER,
         allowNull: true,
@@ -60,7 +60,7 @@ const userInf = sequelize.define("userInf", {
     }
 })
 
-const mainUserInf = sequelize.define("mainUserInf", {
+const mainUserInf = sequelize.define("mainUserInfs", {
     id: {
         type: sql.INTEGER,
         allowNull: true,
@@ -101,18 +101,21 @@ sequelize.sync({alter: true}).then(()=>{
 }).catch(err=>{console.log(err)})
 
 app.use("/sign_in",  signInRouter);
+app.use("/admin", adminRouter);
 app.use("/", indexRouter);
-// app.use("/admin", adminRouter);
 
-app.post("/", parser, function(req, res){
+app.post("/login", parser, function(req, res){
     if(req.body) return res.sendStatus(400);
     console.log(req.body);
-    app.use("/admin", function(req, res){
-        mainUserInf.findAll({raw: true}).then(data=>{
-            res.render("admin.hbs");
-            
-        }).catch(err=>{console.log(err)})
-    });
+    mainUserInf.findAll({raw: true}).then(data=>{
+        console.log(data);
+        data.forEach(item => {
+            if(item.logIn == req.body.name){
+                console.log(item);
+                res.redirect("/admin");
+            }
+        });
+    }).catch(err=>{console.log(err)})
 })
 
 // mainUserInf.create({
