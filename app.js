@@ -96,19 +96,20 @@ const Courses = sequelize.define("courses", {
 
 sequelize.sync({alter: true}).then(()=>{
   app.listen(3306, function(){
-    console.log("Сервер запущен")
+    console.log("Сервер запущен");
   }); 
 }).catch(err=>{console.log(err)})
 
-app.use("/sign_in",  signInRouter);
 app.use("/admin", adminRouter);
-app.use("/", indexRouter);
+app.use("/sign_in",  signInRouter);
+app.get("/", indexRouter);
 
 app.post("/login", parser, function(req, res){
-    if(req.body) return res.sendStatus(400);
+    if(!req.body){
+        res.sendStatus(400);
+    }
     console.log(req.body);
     mainUserInf.findAll({raw: true}).then(data=>{
-        console.log(data);
         data.forEach(item => {
             if(item.logIn == req.body.name){
                 console.log(item);
