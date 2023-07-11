@@ -1,5 +1,6 @@
 const exp = require("express");
 const sql = require("sequelize");
+const hbs = require("hbs");
 const signInRouter = require("./routes/signInRouter.js");
 const indexRouter = require("./routes/indexRouter.js");
 const adminRouter = require("./routes/adminRouter.js");
@@ -8,6 +9,7 @@ const app = exp();
 
 app.set("view engine", "hbs");
 app.use(exp.static(__dirname + "/public"));
+hbs.registerPartials(__dirname + "/views/partials");
 const parser = exp.urlencoded({extended: false});
 
 const sequelize = new sql("pokolenie", "root", "Flower_Nerlin", {
