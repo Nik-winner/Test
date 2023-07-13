@@ -8,6 +8,25 @@
 </head>
 <body>
     {{> menuAdmin}}
-
+    <main class="main">
+        <div class="table">
+            <div class="table_el">
+                {{#each users}}
+                    <div class="grid_el">{{this.name}}</div>
+                    <div class="grid_el">{{this.surname}}</div>
+                    <div class="grid_el">{{this.payment}}</div>
+                    <div class="grid_el">
+                        <a href="/edit.hbs">изменить</a>
+                    </div>
+                    <div class="grid_el">
+                        <form>
+                            <input type="submit">
+                        </form>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+    </main>
+    <script src="/JS/admin.js"></script>
 </body>
 </html>

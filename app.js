@@ -3,7 +3,6 @@ const sql = require("sequelize");
 const hbs = require("hbs");
 const signInRouter = require("./routes/signInRouter.js");
 const indexRouter = require("./routes/indexRouter.js");
-const adminRouter = require("./routes/adminRouter.js");
 
 const app = exp();
 
@@ -102,9 +101,16 @@ sequelize.sync({alter: true}).then(()=>{
   }); 
 }).catch(err=>{console.log(err)})
 
-app.use("/admin", adminRouter);
-app.use("/sign_in",  signInRouter);
 app.get("/", indexRouter);
+app.use("/sign_in",  signInRouter);
+
+app.use("/admin", function(req, res){
+    userInf.findAll({raw: true}).then(data=>{
+        res.render("admin.hbs", {
+            users: data
+        })
+    })
+})
 
 app.post("/login", parser, function(req, res){
     if(!req.body){
@@ -121,10 +127,16 @@ app.post("/login", parser, function(req, res){
     }).catch(err=>{console.log(err)})
 })
 
-// mainUserInf.create({
-//     logIn: "Bob",
-//     password: "bob",
-//     title: "admin"
+// userInf.create({
+//     name: "Bob",
+//     surname: "white",
+//     parentsName: "Jack",
+//     parentsPhone: "0555438843",
+//     usersPhone: "0555909035",
+//     birthday: "06042006",
+//     dateStartTrialLesson: "28042020",
+//     payment: "2000",
+//     dateStartMainLesson: "30042020"
 // }).then(res=>{
 //     console.log(res);
 // }).catch(err=>{console.log(err)})
