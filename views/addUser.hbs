@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/addUser.css">
+    <title>Document</title>
+</head>
+<body>
+    {{> menuAdmin}}
+    <main class="main">
+        <form action="/addUser" method="POST" class="form">
+            <label for="name">имя</label>
+            <input name="name" type="text">
+            <label for="surname">фамилия</label>
+            <input name="surname" type="text">
+            <label for="parentsName">имя родителя</label>
+            <input name="parentsName" type="text">
+            <label for="parentsNumber">номер родителя</label>
+            <input name="parentsNumber" type="text">
+            <label for="usersNumber">номер ученика</label>
+            <input name="usersNumber" type="text">
+            <label for="birthday">день рождения</label>
+            <input name="birthday" type="text">
+            <label for="dateStartTrialLesson">дата пробного занятия</label>
+            <input name="dateStartTrialLesson" type="text">
+            <label for="payment">оплата</label>
+            <input name="payment" type="text">
+            <label for="dateStartMainLesson">дата начала занятий</label>
+            <input name="dateStartMainLesson" type="text">
+        </form>
+    </main>
+</body>
+</html>

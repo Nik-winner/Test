@@ -3,6 +3,8 @@ const sql = require("sequelize");
 const hbs = require("hbs");
 const signInRouter = require("./routes/signInRouter.js");
 const indexRouter = require("./routes/indexRouter.js");
+const adminRouter = require("./routes/adminRouter.js");
+
 
 const app = exp();
 
@@ -35,11 +37,11 @@ const userInf = sequelize.define("userInfs", {
         type: sql.STRING,
         allowNull: true
     },
-    parentsPhone: {
+    parentsNumber: {
         type: sql.INTEGER,
         allowNull: true
     },
-    usersPhone: {
+    usersNumber: {
         type: sql.INTEGER,
         allowNull: true
     },
@@ -103,6 +105,7 @@ sequelize.sync({alter: true}).then(()=>{
 
 app.get("/", indexRouter);
 app.use("/sign_in",  signInRouter);
+app.use("/admin", adminRouter)
 
 app.use("/admin", function(req, res){
     userInf.findAll({raw: true}).then(data=>{
