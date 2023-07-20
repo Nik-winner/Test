@@ -10,24 +10,55 @@
     {{> menuAdmin}}
     <main class="main">
         <form action="/addUser" method="POST" class="form">
-            <label for="name">имя</label>
-            <input name="name" type="text">
-            <label for="surname">фамилия</label>
-            <input name="surname" type="text">
-            <label for="parentsName">имя родителя</label>
-            <input name="parentsName" type="text">
-            <label for="parentsNumber">номер родителя</label>
-            <input name="parentsNumber" type="text">
-            <label for="usersNumber">номер ученика</label>
-            <input name="usersNumber" type="text">
-            <label for="birthday">день рождения</label>
-            <input name="birthday" type="text">
-            <label for="dateStartTrialLesson">дата пробного занятия</label>
-            <input name="dateStartTrialLesson" type="text">
-            <label for="payment">оплата</label>
-            <input name="payment" type="text">
-            <label for="dateStartMainLesson">дата начала занятий</label>
-            <input name="dateStartMainLesson" type="text">
+            <fiedset class="input_cont">
+                <div class="twin_input">
+                    <div class="cont_label">
+                        <label for="name">имя</label>
+                        <input name="name" type="text">
+                    </div>
+                    <div class="cont_label">
+                        <label for="surname">фамилия</label>
+                        <input name="surname" type="text">                        
+                    </div>
+                </div>
+                <div class="single_input">
+                    <label for="parentsName">имя родителя</label>
+                    <input name="parentsName" type="text">
+                </div>
+            </fiedset>
+            <fiedset class="input_cont">
+                <div class="single_input">
+                    <label for="parentsNumber">номер родителя</label>
+                    <input name="parentsNumber" type="tel">
+                </div>
+                <div class="single_input">
+                    <label for="usersNumber">номер ученика</label>
+                    <input name="usersNumber" type="tel">
+                </div>
+            </fiedset>
+            <fiedset class="input_cont">
+                <div class="single_input">
+                    <label for="birthday">день рождения</label>
+                    <input name="birthday" type="date" step="any">
+                </div>
+                <div class="twin_input">
+                    <div class="cont_label">
+                        <label for="dateStartTrialLesson">дата пробного занятия</label>
+                        <input name="dateStartTrialLesson" type="date"  step="any">
+                    </div>
+                    <div class="cont_label">
+                        <label for="dateStartMainLesson">дата начала занятий</label>
+                        <input name="dateStartMainLesson" type="date"  step="any">
+                    </div>
+                </div>
+            </fiedset>
+            <fiedset class="input_cont">
+                <div class="single_input">
+                    <label for="payment">оплата</label>
+                    <input name="payment" type="number">
+                </div>
+            </fiedset>
+            <input type="submit" value="добавить" class="submit">
         </form>
     </main>
 </body>

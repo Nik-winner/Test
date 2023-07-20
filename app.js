@@ -53,13 +53,13 @@ const userInf = sequelize.define("userInfs", {
         type: sql.INTEGER,
         allowNull: true
     },
-    payment: {
-        type: sql.INTEGER,
-        allowNull: false
-    },
     dateStartMainLesson: {
         type: sql.INTEGER,
         allowNull: true
+    },
+    payment: {
+        type: sql.INTEGER,
+        allowNull: false
     }
 })
 
@@ -119,27 +119,45 @@ app.post("/login", parser, function(req, res){
     if(!req.body){
         res.sendStatus(400);
     }
-    console.log(req.body);
     mainUserInf.findAll({raw: true}).then(data=>{
         data.forEach(item => {
-            if(item.logIn == req.body.name){
+            if(item.logIn == req.body.name && item.password == req.body.password){
                 console.log(item);
                 res.redirect("/admin");
             }
         });
     }).catch(err=>{console.log(err)})
 })
+app.post("/addUser", parser, function(req, res){
+    if(!req.body){
+        res.sendStatus(400);
+    }
+    userInf.create({
+        name: req.body.name,
+        surname: req.body.surname,
+        parentsName: req.body.parentsName,
+        parentsNumber: req.body.parentsNumber,
+        usersNumber: req.body.usersNumber,
+        birthday: req.body.birthday,
+        dateStartTrialLesson: req.body.dateStartTrialLesson,
+        dateStartMainLesson: req.body.dateStartMainLesson,
+        payment: req.body.payment
+    }).then(resolve=>{
+        console.log(resolve);
+    }).catch(err=>{console.log(err)})
+    res.redirect("/admin");
+})
 
 // userInf.create({
 //     name: "Bob",
 //     surname: "white",
 //     parentsName: "Jack",
-//     parentsPhone: "0555438843",
-//     usersPhone: "0555909035",
+//     parentsNumber: "0555438843",
+//     usersNumber: "0555909035",
 //     birthday: "06042006",
 //     dateStartTrialLesson: "28042020",
-//     payment: "2000",
-//     dateStartMainLesson: "30042020"
+//     dateStartMainLesson: "30042020",
+//     payment: "2000"
 // }).then(res=>{
 //     console.log(res);
 // }).catch(err=>{console.log(err)})

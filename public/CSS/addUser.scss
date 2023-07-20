@@ -55,4 +55,44 @@ a {
     background-color: rgb(75, 66, 133);
     width: 75vw;
     height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.submit{
+    color: white;
+    width: 25%;
+    cursor: pointer;
+}
+input{
+    background-color: rgb(63, 59, 98);
+    border: 1px solid rgb(175 166 255);
+    height: 3vh;
+    outline: none;
+    cursor: text;
+}
+.input_cont{
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+}
+.twin_input{
+    display: flex;
+    justify-content: space-between;
+}
+.cont_label{
+    width: 49%;
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.5%;
+}
+.single_input{
+    display: flex;
+    flex-direction: column;
+    margin: 0.5%;
+    margin-right: 0px;
+}
+input::-webkit-calendar-picker-indicator {
+    opacity: 0;
 }
