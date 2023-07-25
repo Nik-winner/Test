@@ -46,15 +46,15 @@ const userInf = sequelize.define("userInfs", {
         allowNull: true
     },
     birthday: {
-        type: sql.INTEGER,
+        type: sql.DATEONLY,
         allowNull: true
     },
     dateStartTrialLesson: {
-        type: sql.INTEGER,
+        type: sql.DATEONLY,
         allowNull: true
     },
     dateStartMainLesson: {
-        type: sql.INTEGER,
+        type: sql.DATEONLY,
         allowNull: true
     },
     payment: {
@@ -78,7 +78,7 @@ const mainUserInf = sequelize.define("mainUserInfs", {
         type: sql.STRING,
         allowNull: true
     },
-    title: {
+    role: {
         type: sql.STRING,
         allowNull: true
     }
@@ -97,6 +97,8 @@ const Courses = sequelize.define("courses", {
     }
 })
 
+userInf.hasOne(mainUserInf, {onDelete: "cascade"})
+
 sequelize.sync({alter: true}).then(()=>{
   app.listen(3306, function(){
     console.log("Сервер запущен");
@@ -108,11 +110,20 @@ app.use("/sign_in",  signInRouter);
 app.use("/admin", adminRouter)
 
 app.use("/admin", function(req, res){
-    userInf.findAll({raw: true}).then(data=>{
+    userInf.findAll({raw: true}, {
+        attributes: ["name", "surname"],
+        include: [{
+            model: mainUserInf,
+            attributes: ["role"]
+        }]
+    }).then(data=>{
+        for(user of data){
+            console.log(user.surname)
+        }
         res.render("admin.hbs", {
             users: data
         })
-    })
+    }).catch(err=>{console.log(err)})
 })
 
 app.post("/login", parser, function(req, res){
@@ -154,9 +165,9 @@ app.post("/addUser", parser, function(req, res){
 //     parentsName: "Jack",
 //     parentsNumber: "0555438843",
 //     usersNumber: "0555909035",
-//     birthday: "06042006",
-//     dateStartTrialLesson: "28042020",
-//     dateStartMainLesson: "30042020",
+//     birthday: "2006-04-06",
+//     dateStartTrialLesson: "2020-04-06",
+//     dateStartMainLesson: "2020-04-06",
 //     payment: "2000"
 // }).then(res=>{
 //     console.log(res);
