@@ -38,11 +38,11 @@ const userInf = sequelize.define("userInfs", {
         allowNull: true
     },
     parentsNumber: {
-        type: sql.INTEGER,
+        type: sql.DECIMAL(11, 0),
         allowNull: true
     },
     usersNumber: {
-        type: sql.INTEGER,
+        type: sql.DECIMAL(11, 0),
         allowNull: true
     },
     birthday: {
@@ -97,7 +97,7 @@ const Courses = sequelize.define("courses", {
     }
 })
 
-userInf.hasOne(mainUserInf, {onDelete: "cascade"})
+userInf.belongsTo(mainUserInf, {onDelete: "cascade"})
 
 sequelize.sync({alter: true}).then(()=>{
   app.listen(3306, function(){
@@ -118,7 +118,7 @@ app.use("/admin", function(req, res){
         }]
     }).then(data=>{
         for(user of data){
-            console.log(user.surname)
+            console.log(user)
         }
         res.render("admin.hbs", {
             users: data
