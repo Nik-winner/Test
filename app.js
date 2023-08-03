@@ -35,27 +35,27 @@ const UserInf = sequelize.define("userInfs", {
     },
     parentsName: {
         type: sql.STRING,
-        allowNull: true
+        allowNull: false
     },
     parentsNumber: {
         type: sql.DECIMAL(11, 0),
-        allowNull: true
+        allowNull: false
     },
     usersNumber: {
         type: sql.DECIMAL(11, 0),
-        allowNull: true
+        allowNull: false
     },
     birthday: {
         type: sql.DATEONLY,
-        allowNull: true
+        allowNull: false
     },
     dateStartTrialLesson: {
         type: sql.DATEONLY,
-        allowNull: true
+        allowNull: false
     },
     dateStartMainLesson: {
         type: sql.DATEONLY,
-        allowNull: true
+        allowNull: false
     },
     payment: {
         type: sql.INTEGER,
@@ -63,7 +63,7 @@ const UserInf = sequelize.define("userInfs", {
     }
 })
 
-const MainUserInf = sequelize.define("mainUserInfs", {
+const MainInf = sequelize.define("mainInfs", {
     id: {
         type: sql.INTEGER,
         allowNull: true,
@@ -97,7 +97,7 @@ const Courses = sequelize.define("courses", {
     }
 })
 
-UserInf.hasOne(MainUserInf, {onDelete: "cascade"})
+UserInf.hasOne(MainInf, {onDelete: "cascade"})
 
 sequelize.sync({alter: true}).then(()=>{
   app.listen(3306, function(){
@@ -121,11 +121,19 @@ app.post("/login", parser, function(req, res){
     if(!req.body){
         res.sendStatus(400);
     }
-    MainUserInf.findAll({raw: true}).then(data=>{
+    MainInf.findAll({raw: true}).then(data=>{
         data.forEach(item => {
-            if(item.logIn == req.body.name && item.password == req.body.password){
-                console.log(item);
-                res.redirect("/admin");
+            if(item.login == req.body.name && item.password == req.body.password){
+                if(item.role == "admin"){
+                    console.log(item);
+                    res.redirect("/admin");
+                }else if(item.role == "mentor"){
+                    console.log(item);
+                    res.redirect("/mentor")
+                }else{
+                    console.log(item);
+                    res.redirect("/user")
+                }
             }
         });
     }).catch(err=>{console.log(err)})
@@ -145,10 +153,6 @@ app.post("/addUser", parser, function(req, res){
         dateStartMainLesson: req.body.dateStartMainLesson,
         payment: req.body.payment
     }).then(resolve=>{
-        MainUserInf.create({
-            login: req.body.name,
-            paswword: req.body.password
-        })
         console.log(resolve);
     }).catch(err=>{console.log(err)})
     res.redirect("/admin");
