@@ -9,16 +9,16 @@
 <body>
     {{> menuAdmin}}
     <main class="main">
-        <form action="/addUser" method="POST" class="form">
+        <form action="/addUser" method="POST" id="form">
             <fiedset class="input_cont">
                 <div class="twin_input">
                     <div class="cont_label">
                         <label for="name">имя</label>
-                        <input name="name" type="text">
+                        <input name="name" type="text" required>
                     </div>
                     <div class="cont_label">
                         <label for="surname">фамилия</label>
-                        <input name="surname" type="text">                        
+                        <input name="surname" type="text" required>                        
                     </div>
                 </div>
                 <div class="single_input">
@@ -29,11 +29,11 @@
             <fiedset class="input_cont">
                 <div class="single_input">
                     <label for="parentsNumber">номер родителя</label>
-                    <input name="parentsNumber" type="tel">
+                    <input name="parentsNumber" type="tel" maxlength="11">
                 </div>
                 <div class="single_input">
                     <label for="usersNumber">номер ученика</label>
-                    <input name="usersNumber" type="tel">
+                    <input name="usersNumber" type="tel" maxlength="11">
                 </div>
             </fiedset>
             <fiedset class="input_cont">
@@ -60,7 +60,15 @@
                     </div>
                     <div class="cont_label">
                         <label for="password">пароль</label>
-                        <input name="password" type="text">
+                        <input name="password" type="password" required>
+                    </div>
+                    <div class="cont_label">
+                        <label for="role">роль</label>
+                        <select name="role" class="select" form="form" required>
+                            <option value="ученик">ученик</option>
+                            <option value="ментор">ментор</option>
+                            <option value="админ">админ</option>
+                        </select>
                     </div>
                 </div>
             </fiedset>

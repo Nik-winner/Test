@@ -21,45 +21,45 @@ const sequelize = new sql("pokolenie", "root", "Flower_Nerlin", {
 const UserInf = sequelize.define("userInfs", {
     id: {
         type: sql.INTEGER,
-        allowNull: true,
+        allowNull: false,
         autoIncrement: true,
         primaryKey: true
     },
     name: {
         type: sql.STRING,
-        allowNull: true,
+        allowNull: false
     },
     surname: {
         type: sql.STRING,
-        allowNull: true
+        allowNull: false
     },
     parentsName: {
         type: sql.STRING,
-        allowNull: false
+        allowNull: true
     },
     parentsNumber: {
         type: sql.DECIMAL(11, 0),
-        allowNull: false
+        allowNull: true
     },
     usersNumber: {
         type: sql.DECIMAL(11, 0),
-        allowNull: false
+        allowNull: true
     },
     birthday: {
         type: sql.DATEONLY,
-        allowNull: false
+        allowNull: true
     },
     dateStartTrialLesson: {
         type: sql.DATEONLY,
-        allowNull: false
+        allowNull: true
     },
     dateStartMainLesson: {
         type: sql.DATEONLY,
-        allowNull: false
+        allowNull: true
     },
     payment: {
         type: sql.INTEGER,
-        allowNull: false
+        allowNull: true
     }
 })
 
@@ -72,15 +72,15 @@ const MainInf = sequelize.define("mainInfs", {
     },
     login: {
         type: sql.STRING,
-        allowNull: true
+        allowNull: false
     },
     password: {
         type: sql.STRING,
-        allowNull: true
+        allowNull: false
     },
     role: {
         type: sql.STRING,
-        allowNull: true
+        allowNull: false
     }
 })
 
@@ -142,6 +142,7 @@ app.post("/addUser", parser, function(req, res){
     if(!req.body){
         res.sendStatus(400);
     }
+    console.log(req)
     UserInf.create({
         name: req.body.name,
         surname: req.body.surname,
@@ -152,10 +153,28 @@ app.post("/addUser", parser, function(req, res){
         dateStartTrialLesson: req.body.dateStartTrialLesson,
         dateStartMainLesson: req.body.dateStartMainLesson,
         payment: req.body.payment
-    }).then(resolve=>{
-        console.log(resolve);
+    }).then(user=>{
+        MainInf.create({
+            login: req.body.name,
+            password: req.body.password,
+            role: req.body.role
+        }).then(mainInf=>{
+            user.setMainInf(mainInf).catch(err=>{console.log(err)})
+        });
+        console.log(user)
     }).catch(err=>{console.log(err)})
     res.redirect("/admin");
+})
+
+app.post("/delete/:id", function(req, res){
+    UserInf.destroy({
+        where: {
+            id: req.params.id
+        }
+    }).then(res=>{
+        console.log(res);
+        req.redirect("/admin");
+    })
 })
 
 // userInf.create({
