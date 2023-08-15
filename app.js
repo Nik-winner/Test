@@ -15,7 +15,10 @@ const parser = exp.urlencoded({extended: false});
 
 const sequelize = new sql("pokolenie", "root", "Flower_Nerlin", {
     dialect: "mysql",
-    host: "localhost"
+    host: "localhost",
+    define: {
+        timestamps: false
+    }
 })
 
 const UserInf = sequelize.define("userInfs", {
@@ -38,11 +41,11 @@ const UserInf = sequelize.define("userInfs", {
         allowNull: true
     },
     parentsNumber: {
-        type: sql.DECIMAL(11, 0),
+        type: sql.STRING(11),
         allowNull: true
     },
     usersNumber: {
-        type: sql.DECIMAL(11, 0),
+        type: sql.STRING(11),
         allowNull: true
     },
     birthday: {
@@ -142,7 +145,7 @@ app.post("/addUser", parser, function(req, res){
     if(!req.body){
         res.sendStatus(400);
     }
-    console.log(req)
+    console.log(req.body)
     UserInf.create({
         name: req.body.name,
         surname: req.body.surname,
