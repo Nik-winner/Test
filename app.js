@@ -144,29 +144,73 @@ app.post("/login", parser, function(req, res){
 app.post("/addUser", parser, function(req, res){
     if(!req.body){
         res.sendStatus(400);
+    }else{
+        for(let key in req.body){
+            if(req.body[key] == "" || req.body[key] == "Invalid date"){
+                req.body[key] = null;
+            }
+        }
+        UserInf.create({
+            name: req.body.name,
+            surname: req.body.surname,
+            parentsName: req.body.parentsName,
+            parentsNumber: req.body.parentsNumber,
+            usersNumber: req.body.usersNumber,
+            birthday: req.body.birthday,
+            dateStartTrialLesson: req.body.dateStartTrialLesson,
+            dateStartMainLesson: req.body.dateStartMainLesson,
+            payment: req.body.payment
+        }).then(user=>{
+            MainInf.create({
+                login: req.body.name,
+                password: req.body.password,
+                role: req.body.role
+            }).then(mainInf=>{
+                user.setMainInf(mainInf).catch(err=>{console.log(err)})
+            });
+            console.log(user)
+            res.redirect("/admin");
+        }).catch(err=>{console.log(err)})
     }
-    console.log(req.body)
-    UserInf.create({
-        name: req.body.name,
-        surname: req.body.surname,
-        parentsName: req.body.parentsName,
-        parentsNumber: req.body.parentsNumber,
-        usersNumber: req.body.usersNumber,
-        birthday: req.body.birthday,
-        dateStartTrialLesson: req.body.dateStartTrialLesson,
-        dateStartMainLesson: req.body.dateStartMainLesson,
-        payment: req.body.payment
-    }).then(user=>{
-        MainInf.create({
-            login: req.body.name,
-            password: req.body.password,
-            role: req.body.role
-        }).then(mainInf=>{
-            user.setMainInf(mainInf).catch(err=>{console.log(err)})
-        });
-        console.log(user)
+})
+
+app.use("/edit/:id", function(req, res){
+    const userId = req.params.id;
+    UserInf.findAll({where: {id: userId}, raw: true}).then(data=>{
+        res.render("edit.hbs", {
+            user: data[0]
+        })
     }).catch(err=>{console.log(err)})
-    res.redirect("/admin");
+})
+app.post("/edit", parser, function(req, res){
+    if(!req.body){
+        res.sendStatus(400);
+    }else{
+        for(let key in req.body){
+            if(req.body[key] == "" || req.body[key] == "Invalid date"){
+                req.body[key] = null;
+            }
+        }
+        const userId = req.body.id;
+        UserInf.update({
+            name: req.body.name,
+            surname: req.body.surname,
+            parentsName: req.body.parentsName,
+            parentsNumber: req.body.parentsNumber,
+            usersNumber: req.body.usersNumber,
+            birthday: req.body.birthday,
+            dateStartTrialLesson: req.body.dateStartTrialLesson,
+            dateStartMainLesson: req.body.dateStartMainLesson,
+            payment: req.body.payment
+        }, {where: {id: userId}}).then(user=>{
+            user.getMainInf().then(mainInf=>{
+                console.log(mainInf);
+                
+            })
+            console.log(user)
+            res.redirect("/admin");
+        }).catch(err=>{console.log(err)})
+    }
 })
 
 app.post("/delete/:id", function(req, res){
@@ -174,22 +218,8 @@ app.post("/delete/:id", function(req, res){
         where: {
             id: req.params.id
         }
-    }).then(res=>{
-        console.log(res);
-        req.redirect("/admin");
+    }).then(resolve=>{
+        console.log(resolve)
+        res.redirect("/admin")
     })
 })
-
-// userInf.create({
-//     name: "Bob",
-//     surname: "white",
-//     parentsName: "Jack",
-//     parentsNumber: "0555438843",
-//     usersNumber: "0555909035",
-//     birthday: "2006-04-06",
-//     dateStartTrialLesson: "2020-04-06",
-//     dateStartMainLesson: "2020-04-06",
-//     payment: "2000"
-// }).then(res=>{
-//     console.log(res);
-// }).catch(err=>{console.log(err)})
