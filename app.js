@@ -112,12 +112,24 @@ app.get("/", indexRouter);
 app.use("/sign_in",  signInRouter);
 app.use("/admin", adminRouter)
 
-app.use("/admin", function(req, res){
-    UserInf.findAll({raw: true}).then(data=>{
-        res.render("admin.hbs", {
-            users: data
-        })
-    }).catch(err=>{console.log(err)})
+app.use("/admin/:id", function(req, res){
+    UserInf.findAll({
+        attributes: ["name", "surname"],
+        include: [{
+            model: MainInf,
+            atrributes: ['role']
+        }]
+    }).then(users=>{
+        for(let user of users){
+            if(user.mainInf.role == "ученик"){
+                let data = [];
+                data.push(user);
+                res.render("admin.hbs", {
+                    users: data
+                })
+            }
+        }
+    }).catch(err=>{console.log(err)});
 })
 
 app.post("/login", parser, function(req, res){
@@ -127,10 +139,10 @@ app.post("/login", parser, function(req, res){
     MainInf.findAll({raw: true}).then(data=>{
         data.forEach(item => {
             if(item.login == req.body.name && item.password == req.body.password){
-                if(item.role == "admin"){
+                if(item.role == "админ"){
                     console.log(item);
-                    res.redirect("/admin");
-                }else if(item.role == "mentor"){
+                    res.redirect('/admin/' + item.id);
+                }else if(item.role == "ментор"){
                     console.log(item);
                     res.redirect("/mentor")
                 }else{
@@ -192,24 +204,30 @@ app.post("/edit", parser, function(req, res){
             }
         }
         const userId = req.body.id;
-        UserInf.update({
-            name: req.body.name,
-            surname: req.body.surname,
-            parentsName: req.body.parentsName,
-            parentsNumber: req.body.parentsNumber,
-            usersNumber: req.body.usersNumber,
-            birthday: req.body.birthday,
-            dateStartTrialLesson: req.body.dateStartTrialLesson,
-            dateStartMainLesson: req.body.dateStartMainLesson,
-            payment: req.body.payment
-        }, {where: {id: userId}}).then(user=>{
+        UserInf.findByPk(userId).then(user=>{
+            if(!user) return console.log("User no faund");
             user.getMainInf().then(mainInf=>{
-                console.log(mainInf);
-                
+                UserInf.update({
+                    name: req.body.name,
+                    surname: req.body.surname,
+                    parentsName: req.body.parentsName,
+                    parentsNumber: req.body.parentsNumber,
+                    usersNumber: req.body.usersNumber,
+                    birthday: req.body.birthday,
+                    dateStartTrialLesson: req.body.dateStartTrialLesson,
+                    dateStartMainLesson: req.body.dateStartMainLesson,
+                    payment: req.body.payment
+                }, {where: {id: userId}}).then(update=>{
+                    MainInf.update({
+                        login: req.body.name,
+                        password: req.body.password,
+                        role: req.body.role
+                    }, {where: {id: userId}}).then(mainUpdate=>{
+                        res.redirect("/admin");
+                    }).catch(err=>{console.log(err)});
+                }).catch(err=>{console.log(err)});
             })
-            console.log(user)
-            res.redirect("/admin");
-        }).catch(err=>{console.log(err)})
+        }).catch(err=>{console.log(err)});
     }
 })
 

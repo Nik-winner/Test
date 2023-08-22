@@ -15,6 +15,7 @@
                     <div class="cont_label">
                         <label for="name">имя</label>
                         <input name="name" type="text" value="{{user.name}}" required>
+                        <input type="hidden" name="id" value="{{user.id}}">
                     </div>
                     <div class="cont_label">
                         <label for="surname">фамилия</label>
@@ -60,7 +61,7 @@
                     </div>
                     <div class="cont_label">
                         <label for="password">пароль</label>
-                        <input name="password" type="password" required value="{{user.password}}">
+                        <input name="password" type="password" required>
                     </div>
                     <div class="cont_label">
                         <label for="role">роль</label>
