@@ -4,12 +4,4 @@ const signInRouter = exp.Router();
 
 signInRouter.use("/", signInController.signIn);
 
-
-
-
-
-
-   
-
-
 module.exports = signInRouter;

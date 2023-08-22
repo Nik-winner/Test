@@ -87,7 +87,7 @@ const MainInf = sequelize.define("mainInfs", {
     }
 })
 
-const Courses = sequelize.define("courses", {
+const Course = sequelize.define("courses", {
     id: {
         type: sql.INTEGER,
         allowNull: true,
@@ -109,27 +109,34 @@ sequelize.sync({alter: true}).then(()=>{
 }).catch(err=>{console.log(err)})
 
 app.get("/", indexRouter);
-app.use("/sign_in",  signInRouter);
+app.use("/signin",  signInRouter);
 app.use("/admin", adminRouter)
 
-app.use("/admin/:id", function(req, res){
+app.use("/admin", function(req, res){
+    UserInf.findAll({raw: true}).then(data=>{
+        res.render("admin.hbs", {
+            users: data
+        })
+    }).catch(err=>{console.log(err)})
+})
+app.use("/admin/listAdmins", function(req, res){
     UserInf.findAll({
         attributes: ["name", "surname"],
         include: [{
             model: MainInf,
-            atrributes: ['role']
+            attributes: ["role"]
         }]
     }).then(users=>{
+        let data = [];
         for(let user of users){
-            if(user.mainInf.role == "ученик"){
-                let data = [];
+            if(user.mainInf.role == "админ"){
                 data.push(user);
-                res.render("admin.hbs", {
-                    users: data
-                })
             }
         }
-    }).catch(err=>{console.log(err)});
+        res.render("listAdmins.hbs", {
+            users: data
+        })
+    }).catch(err=>{console.log(err)})
 })
 
 app.post("/login", parser, function(req, res){
@@ -141,7 +148,8 @@ app.post("/login", parser, function(req, res){
             if(item.login == req.body.name && item.password == req.body.password){
                 if(item.role == "админ"){
                     console.log(item);
-                    res.redirect('/admin/' + item.id);
+                    uid = item.id;
+                    res.redirect(`/admin`);
                 }else if(item.role == "ментор"){
                     console.log(item);
                     res.redirect("/mentor")
