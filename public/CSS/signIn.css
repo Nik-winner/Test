@@ -64,4 +64,6 @@ input {
   width: 25%;
   cursor: pointer;
   height: 3.5vh;
+  background-color: rgb(63, 59, 98);
+  border: 1px solid rgb(175, 166, 255);
 }/*# sourceMappingURL=signIn.css.map */

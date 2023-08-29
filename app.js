@@ -5,9 +5,9 @@ const db = require("./database/pokolenie.js");
 const signInRouter = require("./routes/signInRouter.js");
 const indexRouter = require("./routes/indexRouter.js");
 const adminRouter = require("./routes/adminRouter.js");
+const MainInf = require("./models/mainInf.js");
 
 const app = exp();
-
 app.set("view engine", "hbs");
 app.use(exp.static(__dirname + "/public"));
 hbs.registerPartials(__dirname + "/views/partials");
@@ -24,9 +24,32 @@ db.sync({alter: true}).then(()=>{
 }).catch(err=>{console.log(err)})
 
 app.get("/", indexRouter);
-app.use("/sign_in",  signInRouter);
+app.use("/sign_in", signInRouter);
 app.use("/admin", adminRouter);
 
+app.post('/login', parser, function(req, res){
+    if(!req.body){
+        res.sendStatus(400);
+    }else{
+        MainInf.findAll({raw: true}).then(data=>{
+            data.forEach(item => {
+                if(item.login == req.body.name && item.password == req.body.password){
+                    if(item.role == "админ"){
+                        console.log(item);
+                        uid = item.id;
+                        res.redirect(`/admin`);
+                    }else if(item.role == "ментор"){
+                        console.log(item);
+                        res.redirect("/mentor")
+                    }else{
+                        console.log(item);
+                        res.redirect("/user")
+                    }
+                }
+            });
+        }).catch(err=>{console.log(err)})
+    }
+})
 app.post("/edit", parser, function(req, res){
     if(!req.body){
         res.sendStatus(400);
