@@ -2,7 +2,7 @@ const UserInf = require("../models/userInf.js");
 const MainInf = require("../models/mainInf.js");
 
 exports.create = function(req, res){
-    res.render("creat.hbs")
+    res.render("create.hbs")
 }
 
 exports.admin = function(req, res){
