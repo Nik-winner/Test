@@ -12,7 +12,7 @@
         <img src="/Images/logo.png" class="img" alt="">
         <img src="/Images/logoText.png" class="img" alt="">
     </div>
-    <form action="login" id="form" method="POST">
+    <div id="form">
         <div class="title">
             <p class="text">Вход</p>
         </div>
@@ -23,6 +23,41 @@
             <input name="password" type="password" class="item" id="password">
             <input type="submit" class="submit">
         </div>
-    </form>
+    </div>
+    {{!-- <form action="login" id="form" method="POST">
+        
+    </form> --}}
+    <script>
+        let submit = document.querySelector('.submit');
+        let name = document.querySelector('#name');
+        let password = document.querySelector("#password");
+
+        submit.addEventListener('click', post)
+        function post(){
+            let user = {
+                login: name.value,
+                password: password.value
+            }
+            console.log(user)
+            async function postUser(){
+                const data = await resolve('/sign_in/login', "POST", user);
+                console.log("вернул промис", data);
+            }
+            postUser();
+        }
+        async function resolve(url, method, data){
+            try{
+                const headers = {};
+                let body;
+                if(data){
+                    headers["Content-Type"]="application/json";
+                    body = JSON.stringify(data);
+                }
+                console.log('json', data)
+                const res = await fetch(url, {method, headers, body});
+                return await res.json();
+            }catch(err){console.log(err)}
+        }
+    </script>
 </body>
 </html>
