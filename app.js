@@ -11,6 +11,7 @@ app.set("view engine", "hbs");
 app.use(exp.static(__dirname + "/public"));
 hbs.registerPartials(__dirname + "/views/partials");
 app.use(exp.urlencoded({ extended: false }));
+app.use(exp.json());
 
 db.authenticate().then(res=>{
     console.log("Соединение с БД было успешно установлено")
