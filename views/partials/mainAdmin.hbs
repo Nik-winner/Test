@@ -20,13 +20,13 @@
                         <div class="grid_el">{{this.name}}</div>
                         <div class="grid_el">{{this.surname}}</div>
                         <div class="grid_el">
-                            <a href="/detail">подробнее</a>
+                            <a href="/admin/detail/{{this.id}}">подробнее</a>
                         </div>
                         <div class="grid_el">
-                            <a href="/edit/{{this.id}}" class="edit">изменить</a>
+                            <a href="/admin/edit/{{this.id}}" class="edit">изменить</a>
                         </div>
                         <div class="grid_el">
-                            <form action="delete/{{this.id}}" method="POST">
+                            <form action="/admin/delete/{{this.id}}" method="POST">
                                 <input type="submit" class="submit" value="удалить">
                             </form>
                         </div>

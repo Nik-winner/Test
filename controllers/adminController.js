@@ -33,6 +33,30 @@ exports.listAdmins = function(req, res){
     }).catch(err=>{console.log(err)})
 }
 
+exports.detail = function(req, res){
+    UserInf.findByPk(req.params["id"]).then(inf=>{
+        if(!inf) return console.log("User not found");
+        inf.getMainInf().then(mainInf=>{
+            let data = {
+                name: inf.name,
+                surname: inf.surname,
+                parentsName: inf.parentsName,
+                parentsNumber: inf.parentsNumber,
+                usersNumber: inf.usersNumber,
+                birthday: inf.birthday,
+                dateStartTrialLesson: inf.dateStartTrialLesson,
+                dateStartMainLesson: inf.dateStartMainLesson,
+                payment: inf.payment,
+                password: mainInf.password,
+                role: mainInf.role
+            }
+            res.render("detail.hbs", {
+                user:  data
+            })
+        })
+    })
+}
+
 exports.edit = function(req, res){
     const userId = req.params.id;
     UserInf.findAll({where: {id: userId}, raw: true}).then(data=>{
@@ -69,8 +93,55 @@ exports.addUser = function(req, res){
             }).then(mainInf=>{
                 user.setMainInf(mainInf).catch(err=>{console.log(err)})
             });
-            console.log(user)
             res.redirect("/admin");
         }).catch(err=>{console.log(err)})
     }
+}
+
+exports.change = function(req, res){
+    if(!req.body){
+        res.sendStatus(400);
+    }else{
+        for(let key in req.body){
+            if(req.body[key] == "" || req.body[key] == "Invalid date"){
+                req.body[key] = null;
+            }
+        }
+        const userId = req.body.id;
+        UserInf.findByPk(userId).then(user=>{
+            if(!user) return console.log("User no faund");
+            user.getMainInf().then(mainInf=>{
+                UserInf.update({
+                    name: req.body.name,
+                    surname: req.body.surname,
+                    parentsName: req.body.parentsName,
+                    parentsNumber: req.body.parentsNumber,
+                    usersNumber: req.body.usersNumber,
+                    birthday: req.body.birthday,
+                    dateStartTrialLesson: req.body.dateStartTrialLesson,
+                    dateStartMainLesson: req.body.dateStartMainLesson,
+                    payment: req.body.payment
+                }, {where: {id: userId}}).then(update=>{
+                    MainInf.update({
+                        login: req.body.name,
+                        password: req.body.password,
+                        role: req.body.role
+                    }, {where: {id: userId}}).then(mainUpdate=>{
+                        res.redirect("/admin");
+                    }).catch(err=>{console.log(err)});
+                }).catch(err=>{console.log(err)});
+            })
+        }).catch(err=>{console.log(err)});
+    }
+}
+
+exports.delete = function(req, res){
+    UserInf.destroy({
+        where: {
+            id: req.params.id
+        }
+    }).then(resolve=>{
+        console.log(resolve)
+        res.redirect("/admin")
+    })
 }

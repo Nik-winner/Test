@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/CSS/detail.css">
+    <title>Document</title>
+</head>
+<body>
+    {{> menuAdmin}}
+    <main class="main">
+        <section id="form">
+            <div class="input_cont">
+                <div class="twin_input">
+                    <div class="cont_label">
+                        <p>имя:</p>
+                        <p class="inf">{{user.name}}</p>
+                    </div>
+                    <div class="cont_label">
+                        <p>фамилия:</p>
+                        <p class="inf">{{user.surname}}</p>                        
+                    </div>
+                </div>
+                <div class="single_input">
+                    <p>имя родителя:</p>
+                    <p class="inf">{{user.parentsName}}</p>
+                </div>
+            </div>
+            <div class="input_cont">
+                <div class="single_input">
+                    <p>номер родителя:</p>
+                    <p class="inf">{{user.parentsNumber}}</p>
+                </div>
+                <div class="single_input">
+                    <p>номер ученика:</p>
+                    <p class="inf">{{user.usersNumber}}</p>
+                </div>
+            </div>
+            <div class="input_cont">
+                <div class="single_input">
+                    <p>день рождения:</p>
+                    <p class="inf">{{user.birthday}}</p>
+                </div>
+                <div class="twin_input">
+                    <div class="cont_label">
+                        <p>дата пробного занятия:</p>
+                        <p class="inf">{{user.dateStartTrialLesson}}</p>
+                    </div>
+                    <div class="cont_label">
+                        <p>дата начала занятий:</p>
+                        <p class="inf">{{user.dateStartMainLesson}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="input_cont">
+                <div class="twin_input">
+                    <div class="cont_label">
+                        <p>оплата:</p>
+                        <p class="inf">{{user.payment}}</p>
+                    </div>
+                    <div class="cont_label">
+                        <p>пароль:</p>
+                        <p class="inf">{{user.password}}</p>
+                    </div>
+                    <div class="cont_label">
+                        <p>роль:</p>
+                        <p class="inf">{{user.role}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="input_cont">
+                <a href="/admin">назад</a>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

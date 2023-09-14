@@ -11,17 +11,7 @@ exports.login = function(req, res){
         MainInf.findAll({raw: true}).then(data=>{
             data.forEach(item => {
                 if(item.login == req.body.login && item.password == req.body.password){
-                    if(item.role == "админ"){
-                        console.log(item);
-                        // res.redirect(`/admin`);
-                        res.json({user: true})
-                    }else if(item.role == "ментор"){
-                        console.log(item);
-                        res.redirect("/mentor")
-                    }else{
-                        console.log(item);
-                        res.redirect("/user")
-                    }
+                    res.json({user: item.role});
                 }
             });
         }).catch(err=>{console.log(err)})
