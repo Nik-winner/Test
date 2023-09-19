@@ -78,6 +78,7 @@ p {
 .inf {
   background-color: rgb(63, 59, 98);
   outline: none;
+  height: 1.1rem;
 }
 
 .input_cont {
@@ -111,4 +112,17 @@ p {
   height: 3vh;
   outline: none;
   cursor: pointer;
+}
+
+.back {
+  border: 1px solid white;
+  flex-direction: row;
+  justify-content: center;
+  display: flex;
+  background-color: rgb(63, 59, 98);
+}
+
+.back_to_admin {
+  padding-left: 4px;
+  padding-right: 4px;
 }/*# sourceMappingURL=detail.css.map */

@@ -18,7 +18,7 @@ function post(){
         const data = await req('/sign_in/login', "POST", user);
         console.log("вернул промис", data);
         if(data.user == "админ"){
-            window.location.href = "/admin";
+            window.location.href = `/admin`;
         }else if(data.user == "ученик"){
             window.location.href = "/user";
         }else if(data.user == "ментор"){

@@ -5,6 +5,10 @@ exports.create = function(req, res){
     res.render("create.hbs")
 }
 
+exports.attendance = function(req, res){
+    res.render("attendance.hbs")
+}
+
 exports.admin = function(req, res){
     UserInf.findAll({raw: true}).then(data=>{
         res.render("admin.hbs", {
@@ -27,7 +31,47 @@ exports.listAdmins = function(req, res){
                 data.push(user);
             }
         }
-        res.render("listAdmins.hbs", {
+        res.render("admin.hbs", {
+            users: data
+        })
+    }).catch(err=>{console.log(err)})
+}
+
+exports.listUsers = function(req, res){
+    UserInf.findAll({
+        attributes: ["name", "surname"],
+        include: [{
+            model: MainInf,
+            attributes: ["role"]
+        }]
+    }).then(users=>{
+        let data = [];
+        for(let user of users){
+            if(user.mainInf.role == "ученик"){
+                data.push(user);
+            }
+        }
+        res.render("admin.hbs", {
+            users: data
+        })
+    }).catch(err=>{console.log(err)})
+}
+
+exports.listMentors = function(req, res){
+    UserInf.findAll({
+        attributes: ["name", "surname"],
+        include: [{
+            model: MainInf,
+            attributes: ["role"]
+        }]
+    }).then(users=>{
+        let data = [];
+        for(let user of users){
+            if(user.mainInf.role == "ментор"){
+                data.push(user);
+            }
+        }
+        res.render("admin.hbs", {
             users: data
         })
     }).catch(err=>{console.log(err)})

@@ -1,0 +1,50 @@
+body {
+  margin: 0px;
+  background-image: url("../Images/main.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: 100vh;
+}
+
+li {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+.header {
+  width: 100%;
+}
+
+* {
+  box-sizing: border-box;
+  color: white;
+}
+
+.nav_img {
+  max-height: 3.3rem;
+}
+
+.nav {
+  display: flex;
+  background-color: rgb(120, 6, 173);
+  justify-content: space-between;
+  align-items: center;
+  height: 5rem;
+  padding: 16px;
+  position: relative;
+}
+
+.nav_flex {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.cont_nav_flex {
+  width: 70%;
+}/*# sourceMappingURL=attendance.css.map */

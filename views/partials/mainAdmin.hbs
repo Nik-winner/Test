@@ -1,37 +1,37 @@
 <main class="main">
-        <div class="main_div">
-            <div class="cont_menu">
-                <p class="menu_text">Меню</p>
-                <ul class="menu">
-                    <li class="menu_item">
-                        <a href="/admin">ученики</a>
-                    </li>
-                    <li class="menu_item">
-                        <a href="#">ментары</a>
-                    </li>
-                    <li class="menu_item">
-                        <a href="/admin/list_admins">админы</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="table">
-                <div class="table_el">
-                    {{#each users}}
-                        <div class="grid_el">{{this.name}}</div>
-                        <div class="grid_el">{{this.surname}}</div>
-                        <div class="grid_el">
-                            <a href="/admin/detail/{{this.id}}">подробнее</a>
-                        </div>
-                        <div class="grid_el">
-                            <a href="/admin/edit/{{this.id}}" class="edit">изменить</a>
-                        </div>
-                        <div class="grid_el">
-                            <form action="/admin/delete/{{this.id}}" method="POST">
-                                <input type="submit" class="submit" value="удалить">
-                            </form>
-                        </div>
-                    {{/each}}
-                </div>
+    <div class="main_div">
+        <div class="cont_menu">
+            <p class="menu_text">Меню</p>
+            <ul class="menu">
+                <li class="menu_item">
+                    <a href="/admin/list_users">ученики</a>
+                </li>
+                <li class="menu_item">
+                    <a href="/admin/list_mentors">ментары</a>
+                </li>
+                <li class="menu_item">
+                    <a href="/admin/list_admins">админы</a>
+                </li>
+            </ul>
+        </div>
+        <div class="table">
+            <div class="table_el">
+                {{#each users}}
+                    <div class="grid_el">{{this.name}}</div>
+                    <div class="grid_el">{{this.surname}}</div>
+                    <div class="grid_el">
+                        <a href="/admin/detail/{{this.id}}">подробнее</a>
+                    </div>
+                    <div class="grid_el">
+                        <a href="/admin/edit/{{this.id}}" class="edit">изменить</a>
+                    </div>
+                    <div class="grid_el">
+                        <form action="/admin/delete/{{this.id}}" method="POST">
+                            <input type="submit" class="submit" value="удалить">
+                        </form>
+                    </div>
+                {{/each}}
             </div>
         </div>
-    </main>
+    </div>
+</main>
