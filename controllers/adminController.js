@@ -1,5 +1,6 @@
 const UserInf = require("../models/userInf.js");
 const MainInf = require("../models/mainInf.js");
+const Lesson = require("../models/lesson.js");
 
 exports.create = function(req, res){
     res.render("create.hbs")

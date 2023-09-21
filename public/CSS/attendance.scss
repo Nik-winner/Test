@@ -5,6 +5,9 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
     height: 100vh;
 }
 li {
@@ -16,6 +19,7 @@ a {
 }
 .header{
     width: 100%;
+    margin-top: -4vh;
 }
 *{
     box-sizing: border-box;
@@ -40,4 +44,22 @@ a {
 }
 .cont_nav_flex{
     width: 70%;
+}
+.main{
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    height: 80%;
+}
+.table{
+    width: 90vw;
+    height: 90%;
+    border: 1px white solid;
+    background-color: rgb(75, 66, 133);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+.table_item{
+    height: 20%;
+    border: 1px white solid;
 }

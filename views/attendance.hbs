@@ -8,5 +8,15 @@
 </head>
 <body>
     {{> menuAdmin}}
+    <main class="main">
+        <div class="table">
+            {{#each lessons}}
+                <div class="table_item">
+                    <div class="les_item">{{this.date}}</div>
+                    <div class="les_item">{{this.mentor}}</div>
+                </div>
+            {{/each}}
+        </div>
+    </main>
 </body>
 </html>
