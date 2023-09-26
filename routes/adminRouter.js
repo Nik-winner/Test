@@ -5,6 +5,7 @@ const adminRouter = express.Router();
 adminRouter.post("/delete/:id", adminController.delete);
 adminRouter.post("/edit", adminController.change);
 adminRouter.post("/adduser", adminController.addUser);
+adminRouter.post("/search", adminController.search);
 adminRouter.use("/attendance", adminController.attendance);
 adminRouter.use("/detail/:id", adminController.detail);
 adminRouter.use("/edit/:id", adminController.edit);

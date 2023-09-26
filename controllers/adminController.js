@@ -180,6 +180,18 @@ exports.change = function(req, res){
     }
 }
 
+exports.search = function(req, res){
+    if(!req.body){
+        res.sendStatus(400);
+    }else{
+        UserInf.findAll({where: {name: req.body.user}, raw: true}).then(data=>{
+            res.render("admin.hbs", {
+                users: data
+            })
+        })
+    }
+}
+
 exports.delete = function(req, res){
     UserInf.destroy({
         where: {

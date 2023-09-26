@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/CSS/addUser.css">
-    <title>edit</title>
+    <title>изменить</title>
 </head>
 <body>
     {{> menuAdmin}}
@@ -65,11 +65,13 @@
                     </div>
                     <div class="cont_label">
                         <label for="role">роль</label>
-                        <select name="role" class="select" form="form" required>
-                            <option value="ученик">ученик</option>
-                            <option value="ментор">ментор</option>
-                            <option value="админ">админ</option>
-                        </select>
+                        <input type="hidden" name="role" value="{{user.role}}" required>
+                        <span class="select"></span>
+                        <ul class="list-option">
+                            <li class="option">ученик</li>
+                            <li class="option">ментор</li>
+                            <li class="option">админ</li>
+                        </ul>
                     </div>
                 </div>
             </fiedset>
