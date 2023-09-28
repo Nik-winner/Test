@@ -14,42 +14,42 @@
                 <div class="twin_input">
                     <div class="cont_label">
                         <label for="name">имя</label>
-                        <input name="name" type="text" value="{{user.name}}" required>
-                        <input type="hidden" name="id" value="{{user.id}}">
+                        <input name="name" type="text" value="{{data.name}}" required>
+                        <input type="hidden" name="id" value="{{data.id}}">
                     </div>
                     <div class="cont_label">
                         <label for="surname">фамилия</label>
-                        <input name="surname" type="text" value="{{user.surname}}" required>                        
+                        <input name="surname" type="text" value="{{data.surname}}" required>                        
                     </div>
                 </div>
                 <div class="single_input">
                     <label for="parentsName">имя родителя</label>
-                    <input name="parentsName" type="text" value="{{user.parentsName}}">
+                    <input name="parentsName" type="text" value="{{data.parentsName}}">
                 </div>
             </fiedset>
             <fiedset class="input_cont">
                 <div class="single_input">
                     <label for="parentsNumber">номер родителя</label>
-                    <input name="parentsNumber" type="tel" value="{{user.parentsNumber}}">
+                    <input name="parentsNumber" type="tel" value="{{data.parentsNumber}}">
                 </div>
                 <div class="single_input">
                     <label for="usersNumber">номер ученика</label>
-                    <input name="usersNumber" type="tel" value="{{user.usersNumber}}">
+                    <input name="usersNumber" type="tel" value="{{data.usersNumber}}">
                 </div>
             </fiedset>
             <fiedset class="input_cont">
                 <div class="single_input">
                     <label for="birthday">день рождения</label>
-                    <input name="birthday" type="date" step="any" value="{{user.birthday}}">
+                    <input name="birthday" type="date" step="any" value="{{data.birthday}}">
                 </div>
                 <div class="twin_input">
                     <div class="cont_label">
                         <label for="dateStartTrialLesson">дата пробного занятия</label>
-                        <input name="dateStartTrialLesson" type="date"  step="any" value="{{user.dateStartTrialLesson}}">
+                        <input name="dateStartTrialLesson" type="date"  step="any" value="{{data.dateStartTrialLesson}}">
                     </div>
                     <div class="cont_label">
                         <label for="dateStartMainLesson">дата начала занятий</label>
-                        <input name="dateStartMainLesson" type="date"  step="any" value="{{user.dateStartMainLesson}}">
+                        <input name="dateStartMainLesson" type="date"  step="any" value="{{data.dateStartMainLesson}}">
                     </div>
                 </div>
             </fiedset>
@@ -57,26 +57,28 @@
                 <div class="twin_input">
                     <div class="cont_label">
                         <label for="payment">оплата</label>
-                        <input name="payment" type="number" value="{{user.payment}}">
+                        <input name="payment" type="number" value="{{data.payment}}">
                     </div>
                     <div class="cont_label">
                         <label for="password">пароль</label>
-                        <input name="password" type="password" required>
+                        <input name="password" type="password" value="{{mainData.password}}" required>
                     </div>
                     <div class="cont_label">
                         <label for="role">роль</label>
-                        <input type="hidden" name="role" value="{{user.role}}" required>
-                        <span class="select"></span>
-                        <ul class="list-option">
-                            <li class="option">ученик</li>
-                            <li class="option">ментор</li>
-                            <li class="option">админ</li>
-                        </ul>
+                        <input type="hidden" name="role" value="{{mainData.role}}" required>
+                        <span class="select">{{mainData.role}}</span>
+                        <div class="cont_option">
+                            <ul class="list_option">
+                                <li class="option">админ</li>
+                                <li class="option">ментор</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </fiedset>
             <input type="submit" value="изменить" class="submit">
         </form>
     </main>
+    <script src="/JS/edit.js"></script>
 </body>
 </html>

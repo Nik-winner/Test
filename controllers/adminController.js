@@ -104,9 +104,14 @@ exports.detail = function(req, res){
 
 exports.edit = function(req, res){
     const userId = req.params.id;
-    UserInf.findAll({where: {id: userId}, raw: true}).then(data=>{
-        res.render("edit.hbs", {
-            user: data[0]
+    UserInf.findByPk(userId).then(user=>{
+        if(!user) return console.log("Not faund")
+        console.log(user)
+        user.getMainInf().then(mainInf=>{
+            res.render("edit.hbs", {
+                data: user,
+                mainData: mainInf
+            })
         })
     }).catch(err=>{console.log(err)})
 }
