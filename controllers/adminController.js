@@ -176,7 +176,7 @@ exports.change = function(req, res){
                         login: req.body.name,
                         password: req.body.password,
                         role: req.body.role
-                    }, {where: {id: userId}}).then(mainUpdate=>{
+                    }, {where: {id: mainInf.id}}).then(mainUpdate=>{
                         res.redirect("/admin");
                     }).catch(err=>{console.log(err)});
                 }).catch(err=>{console.log(err)});
