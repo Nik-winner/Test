@@ -20,9 +20,9 @@ function post(){
         if(data.user == "админ"){
             window.location.href = `/admin`;
         }else if(data.user == "ученик"){
-            window.location.href = "/user";
+            window.location.href = `/user`;
         }else if(data.user == "ментор"){
-            window.location.href = "/mentor";
+            window.location.href = `/mentor`;
         }else(alert("Not found"));
     }
     postUser();

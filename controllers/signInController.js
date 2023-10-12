@@ -11,7 +11,7 @@ exports.login = function(req, res){
         MainInf.findAll({raw: true}).then(data=>{
             data.forEach(item => {
                 if(item.login == req.body.login && item.password == req.body.password){
-                    res.json({user: item.role});
+                    res.json({user: item.role, uid: item.id});
                 }
             });
         }).catch(err=>{console.log(err)})

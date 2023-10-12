@@ -7,7 +7,11 @@ exports.create = function(req, res){
 }
 
 exports.attendance = function(req, res){
-    res.render("attendance.hbs")
+    Lesson.findAll({raw: true}).then(data=>{
+        res.render("attendance.hbs", {
+            lessons: data
+        })
+    }).catch(err=>{console.log(err)})
 }
 
 exports.admin = function(req, res){
