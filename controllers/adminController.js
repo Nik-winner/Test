@@ -1,18 +1,23 @@
 const UserInf = require("../models/userInf.js");
 const MainInf = require("../models/mainInf.js");
 const Lesson = require("../models/lesson.js");
+const Branch = require("../models/branch.js")
 
 exports.create = function(req, res){
     res.render("create.hbs")
 }
 
-exports.attendance = function(req, res){
-    Lesson.findAll({raw: true}).then(data=>{
-        res.render("attendance.hbs", {
-            lessons: data
+exports.branch = function(req, res){
+    Branch.findAll({raw: true}).then(data=>{
+        res.render("branch.hbs", {
+            branch: data
         })
     }).catch(err=>{console.log(err)})
 }
+
+// exports.attendance = fuction(req, res){
+
+// }
 
 exports.admin = function(req, res){
     UserInf.findAll({raw: true}).then(data=>{

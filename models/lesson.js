@@ -1,5 +1,7 @@
 const sql = require("sequelize");
 const db = require("../database/pokolenie.js")
+const Attendance = require("./attendance.js")
+const MainInf = require("./mainInf.js")
 
 const Lesson = db.define("lessons", {
     id: {
@@ -17,5 +19,7 @@ const Lesson = db.define("lessons", {
         allowNull: false
     }
 })
+
+Lesson.belongsToMany(MainInf, {through: Attendance})
 
 module.exports = Lesson;

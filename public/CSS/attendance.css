@@ -53,6 +53,29 @@ a {
   width: 70%;
 }
 
+.br_main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80%;
+}
+
+.br_list {
+  width: 60vw;
+  height: 90%;
+  border: 1px white solid;
+  background-color: rgb(75, 66, 133);
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+}
+
+.cont_br {
+  border: 1px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .main {
   display: flex;
   justify-content: center;
