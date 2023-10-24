@@ -1,7 +1,5 @@
 const sql = require("sequelize");
 const db = require("../database/pokolenie.js")
-const MainInf = require("./mainInf.js")
-const Lesson = require("./lesson.js")
 
 const Attendance = db.define("attendances", {
     id: {
