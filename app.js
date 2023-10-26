@@ -1,5 +1,4 @@
 const exp = require("express");
-const sql = require("sequelize");
 const hbs = require("hbs");
 const db = require("./database/pokolenie.js");
 const signInRouter = require("./routes/signInRouter.js");

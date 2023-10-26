@@ -7,19 +7,6 @@
     <title>посещаемость</title>
 </head>
 <body>
-    {{> menuAdmin}}
-    <main class="main">
-        <div class="table">
-            {{#each lessons}}
-                <div class="table_item">
-                    <div class="les_item">{{this.date}}</div>
-                    <div class="les_item">{{this.location}}</div>
-                    <div class="les_item">
-                        <a href="admin/attendance/{{this.id}}">подробнее</a>
-                    </div>
-                </div>
-            {{/each}}
-        </div>
-    </main>
+    
 </body>
 </html>

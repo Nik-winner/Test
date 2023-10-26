@@ -15,9 +15,17 @@ exports.branch = function(req, res){
     }).catch(err=>{console.log(err)})
 }
 
-// exports.attendance = fuction(req, res){
-
-// }
+exports.lessons = function(req, res){
+    let branchName = req.params["name"]
+    Branch.findAll({where: {name: branchName} , raw: true}).then(branch=>{
+        if(!branch) return console.log("Branch not found");
+        branch.getLessons().then(lesson=>{
+            res.render("lessons.hbs", {
+                lessons: lesson
+            })
+        }).catch(err=>{console.log(err)})
+    }).catch(err=>{console.log(err)})
+}
 
 exports.admin = function(req, res){
     UserInf.findAll({raw: true}).then(data=>{
@@ -87,7 +95,7 @@ exports.listMentors = function(req, res){
     }).catch(err=>{console.log(err)})
 }
 
-exports.detail = function(req, res){
+exports.detailUser = function(req, res){
     UserInf.findByPk(req.params["id"]).then(inf=>{
         if(!inf) return console.log("User not found");
         inf.getMainInf().then(mainInf=>{
