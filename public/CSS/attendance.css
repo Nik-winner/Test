@@ -28,6 +28,7 @@ a {
 * {
   box-sizing: border-box;
   color: white;
+  font-family: serif;
 }
 
 .nav_img {
@@ -96,10 +97,22 @@ a {
   border: 1px white solid;
   background-color: rgb(75, 66, 133);
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
 }
 
 .table_item {
   height: 20%;
   border: 1px white solid;
+  display: flex;
+  flex-direction: column;
+  padding-left: 10px;
+  justify-content: space-evenly;
+}
+
+.les_text {
+  background-color: rgb(75, 66, 133);
+  border: 0px;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0px;
 }/*# sourceMappingURL=attendance.css.map */

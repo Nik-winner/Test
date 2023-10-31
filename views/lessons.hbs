@@ -12,10 +12,12 @@
         <div class="table">
             {{#each lessons}}
                 <div class="table_item">
-                    <div class="les_item">{{lesson.date}}</div>
-                    <div class="les_item">{{lesson.mentor}}</div>
+                    <div class="les_item">Время: {{this.date}}</div>
+                    <div class="les_item">Ментор: {{this.mentor}}</div>
                     <div class="les_item">
-                        <a href="admin/attendance/{{lesson.id}}">подробнее</a>
+                        <form action="/admin/{{branch.name}}/attendance/{{this.id}}" method="POST" class="cont_les">
+                            <input type="submit" class="les_text" value="подробнее">
+                        </form>
                     </div>
                 </div>
             {{/each}}

@@ -17,11 +17,12 @@ exports.branch = function(req, res){
 
 exports.lessons = function(req, res){
     let branchName = req.params["name"]
-    Branch.findAll({where: {name: branchName} , raw: true}).then(branch=>{
+    Branch.findOne({where: {name: branchName}}).then(branch=>{
         if(!branch) return console.log("Branch not found");
         branch.getLessons().then(lesson=>{
             res.render("lessons.hbs", {
-                lessons: lesson
+                lessons: lesson,
+                branches: branch
             })
         }).catch(err=>{console.log(err)})
     }).catch(err=>{console.log(err)})

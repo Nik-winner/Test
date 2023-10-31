@@ -7,6 +7,23 @@
     <title>посещаемость</title>
 </head>
 <body>
-    
+    {{> menuAdmin}}
+    <main class="main">
+        <div class="attendance_table">
+            <div class="students_table">
+                <div>Ученики</div>
+                {{#each students}}
+                    <div class="cont_stud"></div>
+                    <div class="cont_stud"></div>
+                    <div class="cont_stud"></div>
+                {{/each}}
+            </div>
+            <div class="lessons_table">
+                {{#each lessons}}
+                    
+                {{/each}}
+            </div>
+        </div>
+    </main>
 </body>
 </html>
