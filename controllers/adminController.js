@@ -21,11 +21,14 @@ exports.lessons = function(req, res){
         if(!branch) return console.log("Branch not found");
         branch.getLessons().then(lesson=>{
             res.render("lessons.hbs", {
-                lessons: lesson,
-                branches: branch
+                lessons: lesson
             })
         }).catch(err=>{console.log(err)})
     }).catch(err=>{console.log(err)})
+}
+
+exports.attendance = function(req, res){
+    
 }
 
 exports.admin = function(req, res){
