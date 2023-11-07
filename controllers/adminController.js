@@ -2,6 +2,7 @@ const UserInf = require("../models/userInf.js");
 const MainInf = require("../models/mainInf.js");
 const Lesson = require("../models/lesson.js");
 const Branch = require("../models/branch.js")
+const associations = require("../models/associations.js")
 
 exports.create = function(req, res){
     res.render("create.hbs")
@@ -21,8 +22,28 @@ exports.lessons = function(req, res){
         if(!branch) return console.log("Branch not found");
         branch.getLessons().then(lesson=>{
             res.render("lessons.hbs", {
-                lessons: lesson,
-                branches: branch
+                lessons: lesson
+            })
+        }).catch(err=>{console.log(err)})
+    }).catch(err=>{console.log(err)})
+}
+
+exports.attendance = function(req, res){
+    let lessonId = req.params["id"];
+    Lesson.findByPk(lessonId).then(lesson=>{
+        if(!lesson) return console.log("Lesson not found");
+        lesson.getMainInfs().then(users=>{
+            let students = [];
+            let attendance = [];
+            for(let user of users){
+                if(user.role == "ученик"){
+                    students.push(user);
+                    attendance.push(user.attendances.check)
+                }
+            }
+            res.render("attendance.hbs", {
+                students: students,
+                attendances: attendance
             })
         }).catch(err=>{console.log(err)})
     }).catch(err=>{console.log(err)})

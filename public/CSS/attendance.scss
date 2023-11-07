@@ -101,3 +101,17 @@ a {
     font-size: 1rem;
     padding: 0px;
 }
+.attendance_table{
+    width: 90vw;
+    height: 90%;
+    border: 1px white solid;
+    background-color: rgb(75, 66, 133);
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+}
+.students{
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    border-right: 1px solid white;
+}

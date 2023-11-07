@@ -7,6 +7,7 @@ adminRouter.post("/edit", adminController.change);
 adminRouter.post("/adduser", adminController.addUser);
 adminRouter.post("/search", adminController.search);
 adminRouter.post("/branch/:name", adminController.lessons);
+adminRouter.post("/attendance/:id", adminController.attendance)
 adminRouter.use("/branch", adminController.branch);
 adminRouter.use("/detail/:id", adminController.detailUser);
 adminRouter.use("/edit/:id", adminController.edit);

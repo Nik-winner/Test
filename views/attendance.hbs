@@ -10,17 +10,18 @@
     {{> menuAdmin}}
     <main class="main">
         <div class="attendance_table">
-            <div class="students_table">
-                <div>Ученики</div>
+            <div class="students">
                 {{#each students}}
-                    <div class="cont_stud"></div>
-                    <div class="cont_stud"></div>
-                    <div class="cont_stud"></div>
+                    <div class="cell">
+                        <div class="cont_stud">{{this.login}}</div>
+                        <div class="cont_stud">{{this.surname}}</div>
+                        <div class="cont_stud">({{this.password}})</div>
+                    </div>
                 {{/each}}
             </div>
-            <div class="lessons_table">
-                {{#each lessons}}
-                    
+            <div class="attendance">
+                {{#each attendances}}
+                    <div class="attend">{{check}}</div>
                 {{/each}}
             </div>
         </div>
