@@ -10,19 +10,35 @@
     {{> menuAdmin}}
     <main class="main">
         <div class="attendance_table">
-            <div class="students">
-                {{#each students}}
-                    <div class="cell">
-                        <div class="cont_stud">{{this.login}}</div>
-                        <div class="cont_stud">{{this.surname}}</div>
-                        <div class="cont_stud">({{this.password}})</div>
-                    </div>
-                {{/each}}
+            <div class="dates">
+                <div class="dates_item">
+                    <div>Ученики</div>
+                </div>
+                <div class="week">
+                    <div class="dates_item">ПН</div>
+                    <div class="dates_item">ВТ</div>
+                    <div class="dates_item">СР</div>
+                    <div class="dates_item">ЧТ</div>
+                    <div class="dates_item">ПТ</div>
+                    <div class="dates_item">СБ</div>
+                    <div class="dates_item">ВС</div>
+                </div>
             </div>
-            <div class="attendance">
-                {{#each attendances}}
-                    <div class="attend">{{check}}</div>
-                {{/each}}
+            <div class="users_attendance">
+                <div class="students">
+                    {{#each students}}
+                        <div class="cell">
+                            <div class="cont_stud">{{this.login}}</div>
+                            <div class="cont_stud">{{this.surname}}</div>
+                            <div class="cont_stud">({{this.password}})</div>
+                        </div>
+                    {{/each}}
+                </div>
+                <div class="attendance">
+                    {{#each attendances}}
+                        <div class="attend">{{check}}</div>
+                    {{/each}}
+                </div>
             </div>
         </div>
     </main>

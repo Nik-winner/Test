@@ -2,7 +2,8 @@ const UserInf = require("../models/userInf.js");
 const MainInf = require("../models/mainInf.js");
 const Lesson = require("../models/lesson.js");
 const Branch = require("../models/branch.js")
-const associations = require("../models/associations.js")
+const associations = require("../models/associations.js");
+const { where } = require("sequelize");
 
 exports.create = function(req, res){
     res.render("create.hbs")
@@ -36,11 +37,19 @@ exports.attendance = function(req, res){
             let students = [];
             let attendance = [];
             for(let user of users){
-                if(user.role == "ученик"){
-                    students.push(user);
-                    attendance.push(user.attendances.check)
-                }
+                MainInf.findByPk(user.id, {
+                    include: [{
+                        model: UserInf,
+                        attributes: ["surname"]
+                    }]
+                }).then(student=>{
+                    console.log(student);
+                    students.push(student);
+                }).catch(err=>{console.log(err)})
+                attendance.push(user.attendances.check)
             }
+            // students.push(user);
+            // attendance.push(user.attendances.check)
             res.render("attendance.hbs", {
                 students: students,
                 attendances: attendance
