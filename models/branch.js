@@ -15,6 +15,4 @@ const Branch = db.define("branches", {
     }
 })
 
-Branch.hasMany(Lesson, {onDelete: "cascade"});
-
 module.exports = Branch;

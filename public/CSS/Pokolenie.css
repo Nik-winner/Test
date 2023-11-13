@@ -59,7 +59,7 @@ a {
     height: 15%;
   }
   .btn_body::after,
-  .btn_body::before {
+.btn_body::before {
     left: 0;
     width: 100%;
     background-color: white;
@@ -310,7 +310,7 @@ a {
     display: inline-block;
   }
   .fa-stack-1x,
-  .fa-stack-2x {
+.fa-stack-2x {
     bottom: 0;
     left: 0;
     margin: auto;
@@ -492,7 +492,7 @@ a {
     height: 15%;
   }
   .btn_body::after,
-  .btn_body::before {
+.btn_body::before {
     left: 0;
     width: 100%;
     background-color: white;
@@ -745,7 +745,7 @@ a {
     display: inline-block;
   }
   .fa-stack-1x,
-  .fa-stack-2x {
+.fa-stack-2x {
     bottom: 0;
     left: 0;
     margin: auto;

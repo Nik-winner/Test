@@ -1,6 +1,8 @@
-const Attendance = require("./attendance.js")
-const MainInf = require("./mainInf.js")
-const Lesson = require("./lesson.js")
+const Attendance = require("./attendance.js");
+const MainInf = require("./mainInf.js");
+const Lesson = require("./lesson.js");
+const Branch = require("../models/branch.js");
+const UserInf = require("../models/userInf.js");
 
 Lesson.belongsToMany(MainInf, {through: Attendance});
 MainInf.belongsToMany(Lesson, {through: Attendance});
@@ -10,5 +12,10 @@ Attendance.belongsTo(Lesson);
 
 MainInf.hasMany(Attendance);
 Attendance.belongsTo(MainInf)
+
+UserInf.hasOne(MainInf, {onDelete: "cascade"});
+MainInf.belongsTo(UserInf, {onDelete: "cascade"})
+
+Branch.hasMany(Lesson, {onDelete: "cascade"});
 
 module.exports = {Attendance, MainInf, Lesson}

@@ -1,32 +1,36 @@
+const sql = require("../database/pokolenie.js");
 const UserInf = require("../models/userInf.js");
 const MainInf = require("../models/mainInf.js");
 const Lesson = require("../models/lesson.js");
-const Branch = require("../models/branch.js")
+const Branch = require("../models/branch.js");
 const associations = require("../models/associations.js");
-const { where } = require("sequelize");
 
 exports.create = function(req, res){
     res.render("create.hbs")
 }
 
 exports.branch = function(req, res){
-    Branch.findAll({raw: true}).then(data=>{
-        res.render("branch.hbs", {
-            branch: data
-        })
-    }).catch(err=>{console.log(err)})
+    sql.transaction((t_branch)=>{
+        return Branch.findAll({raw: true}).then(data=>{
+            res.render("branch.hbs", {
+                branch: data
+            })
+        }).catch(err=>{console.log(err)})
+    })
 }
 
 exports.lessons = function(req, res){
     let branchName = req.params["name"]
-    Branch.findOne({where: {name: branchName}}).then(branch=>{
-        if(!branch) return console.log("Branch not found");
-        branch.getLessons().then(lesson=>{
-            res.render("lessons.hbs", {
-                lessons: lesson
-            })
+    sql.transaction((t_lessons)=>{
+        return Branch.findOne({where: {name: branchName}}).then(branch=>{
+            if(!branch) return console.log("Branch not found");
+            branch.getLessons().then(lesson=>{
+                res.render("lessons.hbs", {
+                    lessons: lesson
+                })
+            }).catch(err=>{console.log(err)})
         }).catch(err=>{console.log(err)})
-    }).catch(err=>{console.log(err)})
+    })
 }
 
 exports.attendance = function(req, res){
@@ -37,19 +41,18 @@ exports.attendance = function(req, res){
             let students = [];
             let attendance = [];
             for(let user of users){
-                MainInf.findByPk(user.id, {
+                MainInf.findOne({
+                    where: {id: user.id},
+                    attributes: ["login", "password"],
                     include: [{
                         model: UserInf,
                         attributes: ["surname"]
                     }]
                 }).then(student=>{
-                    console.log(student);
                     students.push(student);
-                }).catch(err=>{console.log(err)})
+                }).catch(err=>{console.log(err)});
                 attendance.push(user.attendances.check)
             }
-            // students.push(user);
-            // attendance.push(user.attendances.check)
             res.render("attendance.hbs", {
                 students: students,
                 attendances: attendance
@@ -251,7 +254,6 @@ exports.delete = function(req, res){
             id: req.params.id
         }
     }).then(resolve=>{
-        console.log(resolve)
         res.redirect("/admin")
     })
 }

@@ -46,6 +46,5 @@ const UserInf = db.define("userInfs", {
         allowNull: true
     }
 })
-UserInf.hasOne(MainInf, {onDelete: "cascade"})
 
 module.exports = UserInf;

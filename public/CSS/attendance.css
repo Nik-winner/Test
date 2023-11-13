@@ -97,7 +97,7 @@ a {
   border: 1px white solid;
   background-color: rgb(75, 66, 133);
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
 }
 
 .table_item {
