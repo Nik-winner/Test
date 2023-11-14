@@ -10,8 +10,8 @@ exports.login = function(req, res){
     if(!req.body){
         res.sendStatus(400);
     }else{
-        sql.transaction((t)=>{
-            return MainInf.findAll({raw: true}).then(data=>{
+        sql.transaction(async(t)=>{
+            return await MainInf.findAll({raw: true}).then(data=>{
                 data.forEach(item => {
                     if(item.login == req.body.login && item.password == req.body.password){
                         res.json({user: item.role, uid: item.id});
