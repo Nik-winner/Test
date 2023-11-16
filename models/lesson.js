@@ -8,10 +8,6 @@ const Lesson = db.define("lessons", {
         autoIncrement: true,
         primaryKey: true
     },
-    date: {
-        type: sql.DATEONLY,
-        allowNull: false,
-    },
     mentor: {
         type: sql.STRING,
         allowNull: false

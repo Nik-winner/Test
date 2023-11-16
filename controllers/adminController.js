@@ -3,6 +3,7 @@ const UserInf = require("../models/userInf.js");
 const MainInf = require("../models/mainInf.js");
 const Lesson = require("../models/lesson.js");
 const Branch = require("../models/branch.js");
+const lessonsDate = require("../models/lessonsDates.js")
 const associations = require("../models/associations.js");
 
 exports.create = function(req, res){
@@ -206,7 +207,7 @@ exports.addUser = function(req, res){
                 }).then(user=>{
                     return MainInf.create({
                         login: req.body.name,
-                        password: req.body.password,
+                        password: req.body.surname,
                         role: req.body.role
                     }, {transaction: t}).then(mainInf=>{
                         user.setMainInf(mainInf, {transaction: t}).catch(err=>{console.log(err)})
