@@ -3,7 +3,7 @@ const UserInf = require("../models/userInf.js");
 const MainInf = require("../models/mainInf.js");
 const Lesson = require("../models/lesson.js");
 const Branch = require("../models/branch.js");
-const lessonsDate = require("../models/lessonsDates.js")
+const LessonsDate = require("../models/lessonsDates.js")
 const associations = require("../models/associations.js");
 
 exports.create = function(req, res){
@@ -25,9 +25,20 @@ exports.lessons = function(req, res){
     sql.transaction(async (t)=>{
         return await Branch.findOne({where: {name: branchName}}).then(branch=>{
             if(!branch) return console.log("Branch not found");
-            return branch.getLessons().then(lesson=>{
+            return branch.getLessons().then(lessons=>{
+                let dates = []
+                for(let lesson of lessons){
+                    lesson.getLessonsDates({transaction: t}).then(dat=>{
+                        for(let d of dat){
+                        console.log(d.shortDate)
+
+                        }
+                        dates.push(dat)
+                    }).catch(err=>{console.log(err)})
+                }
                 res.render("lessons.hbs", {
-                    lessons: lesson
+                    lessons: lessons,
+                    dates: dates
                 })
             }).catch(err=>{console.log(err)})
         }).catch(err=>{console.log(err)})

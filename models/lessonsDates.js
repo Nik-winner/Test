@@ -10,12 +10,14 @@ const LessonsDate = db.define("lessonsDates", {
     },
     date: {
         type: sql.DATEONLY,
-        allowNull: false,
-        get(){
-            let date = this.getDataValue(date);
-            const month = date.getMonth();
-            const day = date.getDate();
-            return `${month}.${day}`
+        allowNull: false
+    },
+    shortDate: {
+        type: sql.VIRTUAL,
+        get() {
+            const date = this.date
+            let fullDate = new Date(date)
+            return `${fullDate.getDate()}.${fullDate.getMonth() + 1}`
         }
     }
 })
