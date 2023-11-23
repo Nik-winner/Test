@@ -26,20 +26,21 @@ exports.lessons = function(req, res){
         return await Branch.findOne({where: {name: branchName}}).then(branch=>{
             if(!branch) return console.log("Branch not found");
             return branch.getLessons().then(lessons=>{
-                let dates = []
                 for(let lesson of lessons){
-                    lesson.getLessonsDates({transaction: t}).then(dat=>{
-                        for(let d of dat){
-                        console.log(d.shortDate)
-
+                    lesson.getLessonsDates({transaction: t}).then(date=>{
+                        for(let d of date){
+                            if(new Date(d.date).getDay() == '1'){
+                                Lesson.update({
+                                    week: d.date
+                                    }, {where: {id: lesson.id}}, {transaction: t}).then(setWeek=>{
+                                        res.render("lessons.hbs", {
+                                            lessons: lessons
+                                        })
+                                })
+                            }
                         }
-                        dates.push(dat)
                     }).catch(err=>{console.log(err)})
                 }
-                res.render("lessons.hbs", {
-                    lessons: lessons,
-                    dates: dates
-                })
             }).catch(err=>{console.log(err)})
         }).catch(err=>{console.log(err)})
     })

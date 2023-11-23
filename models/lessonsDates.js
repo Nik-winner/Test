@@ -18,6 +18,9 @@ const LessonsDate = db.define("lessonsDates", {
             const date = this.date
             let fullDate = new Date(date)
             return `${fullDate.getDate()}.${fullDate.getMonth() + 1}`
+        },
+        set(val) {
+            throw new Error("Don't do it!")
         }
     }
 })
