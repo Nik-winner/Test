@@ -3,7 +3,6 @@ const UserInf = require("../models/userInf.js");
 const MainInf = require("../models/mainInf.js");
 const Lesson = require("../models/lesson.js");
 const Branch = require("../models/branch.js");
-const LessonsDate = require("../models/lessonsDates.js")
 const associations = require("../models/associations.js");
 
 exports.create = function(req, res){
@@ -22,27 +21,13 @@ exports.branch = function(req, res){
 
 exports.lessons = function(req, res){
     let branchName = req.params["name"]
-    sql.transaction(async (t)=>{
-        return await Branch.findOne({where: {name: branchName}}).then(branch=>{
-            if(!branch) return console.log("Branch not found");
-            return branch.getLessons().then(lessons=>{
-                for(let lesson of lessons){
-                    lesson.getLessonsDates({transaction: t}).then(date=>{
-                        for(let d of date){
-                            if(new Date(d.date).getDay() == '1'){
-                                Lesson.update({
-                                    week: d.date
-                                    }, {where: {id: lesson.id}}, {transaction: t}).then(setWeek=>{
-                                        res.render("lessons.hbs", {
-                                            lessons: lessons
-                                        })
-                                })
-                            }
-                        }
-                    }).catch(err=>{console.log(err)})
-                }
-            }).catch(err=>{console.log(err)})
-        }).catch(err=>{console.log(err)})
+    Branch.findOne({where: {name: branchName}}).then(branch=>{
+        if(!branch) return console.log("Branch not found");
+        branch.getLessons().then(lessons=>{
+            res.render("lessons.hbs", {
+                lessons: lessons
+            })
+        })
     })
 }
 

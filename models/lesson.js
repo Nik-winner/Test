@@ -12,18 +12,33 @@ const Lesson = db.define("lessons", {
         type: sql.STRING,
         allowNull: false
     },
-    week: {
+    date: {
         type: sql.DATEONLY,
-        set(val) {
-            this.setDataValue(val)
-        },
+        allowNull: true
+    },
+    shortDate: {
+        type: sql.VIRTUAL,
         get() {
-            const week = this.getDataValue(week)
-            console.log(week)
-            let date = new Date(week)
-            let day = date.getDate()
-            let month = data.getMonth() + 1
-            return `${day}.${month}-${day + 6}.${month}`
+            const fullDate = new Date(this.date)
+            return `${fullDate.getDate()}.${fullDate.getMonth() + 1}`
+        },
+        set(val) {
+            throw new Error("Don't do it!")
+        }
+    },
+    getWeek: {
+        type: sql.VIRTUAL,
+        get() {
+            const fullDate = new Date(this.date)
+            let weeksDay = fullDate
+            let day = fullDate.getDate()
+            let month = fullDate.getMonth() + 1
+            weeksDay = weeksDay.setDate(weeksDay.getDate() + 6)
+            let lastDay = weeksDay.getDate()
+            return (day < 10) ? (month < 10) ? `0${day}.0${month} - 0${lastDay}.0${month}`: `0${day}.${month} - 0${lastDay}.${month}` : `${day}.${month} - ${lastDay}.${month}`
+        },
+        set(val) {
+            throw new Error("Don't do it!")
         }
     }
 })
