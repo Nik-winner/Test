@@ -7,7 +7,7 @@
     <title>посещаемость</title>
 </head>
 <body>
-    {{> menuAdmin}}
+    {{> branchMenu}}
     <main class="main">
         <div class="attendance_table">
             <div class="dates">
@@ -15,13 +15,13 @@
                     <div>Ученики</div>
                 </div>
                 <div class="week">
-                    <div class="dates_item">ПН</div>
-                    <div class="dates_item">ВТ</div>
-                    <div class="dates_item">СР</div>
-                    <div class="dates_item">ЧТ</div>
-                    <div class="dates_item">ПТ</div>
-                    <div class="dates_item">СБ</div>
-                    <div class="dates_item">ВС</div>
+                    {{#each dates}}
+                        <div class="dates_item">
+                            <div>{{this.weekDays}}</div>
+                            <div>{{this.shortDate}}</div>
+                        </div>
+                        
+                    {{/each}}
                 </div>
             </div>
             <div class="users_attendance">

@@ -39,28 +39,39 @@ exports.attendance = function(req, res){
     sql.transaction(async (t)=>{
         return await Lesson.findByPk(lessonId).then(lesson=>{
             if(!lesson) return console.log("Lesson not found");
-            return lesson.getMainInfs().then(users=>{
-                let students = [];
-                let attendance = [];
-                for(let user of users){
-                    MainInf.findOne({
-                        where: {id: user.id},
-                        transaction: t,
-                        attributes: ["login", "password"],
-                        include: [{
-                            model: UserInf,
-                            attributes: ["surname"]
-                        }]
-                    }).then(student=>{
-                        students.push(student);
-                    }).catch(err=>{console.log(err)});
-                    attendance.push(user.attendances.check)
-                }
+            console.log(lesson)
+            let students = [];
+            let attendance = [];
+            let weekDays = [];
+            return Promise.all([
+                lesson.getMainInfs().then(users=>{
+                    users.map(user =>{
+                        MainInf.findOne({
+                            where: {id: user.id},
+                            transaction: t,
+                            attributes: ["login", "password"],
+                            include: [{
+                                model: UserInf,
+                                attributes: ["surname"]
+                            }]
+                        }).then(student=>{
+                            students.push(student)
+                        }).catch(err=>{console.log(err)});
+                        attendance.push(user.attendances.check)
+                    })
+                }).catch(err=>{console.log(err)}),
+                lesson.getLessonsDates().then(dates=>{
+                    dates.map(date=>{
+                        weekDays.push(date)
+                    })
+                }).catch(err=>{console.log(err)})
+            ]).then(
                 res.render("attendance.hbs", {
                     students: students,
+                    dates: weekDays,
                     attendances: attendance
                 })
-            }).catch(err=>{console.log(err)})
+            ).catch(err=>{console.log(err)})
         }).catch(err=>{console.log(err)})
     })
 }
@@ -85,11 +96,12 @@ exports.listAdmins = function(req, res){
             }]
         }).then(users=>{
             let data = [];
-            for(let user of users){
+            users.map(user =>{
                 if(user.mainInf.role == "админ"){
                     data.push(user);
                 }
-            }
+            })
+            console.log(data)
             res.render("admin.hbs", {
                 users: data
             })
@@ -107,11 +119,11 @@ exports.listUsers = function(req, res){
             }]
         }).then(users=>{
             let data = [];
-            for(let user of users){
+            users.map(user=> {
                 if(user.mainInf.role == "ученик"){
                     data.push(user);
                 }
-            }
+            })
             res.render("admin.hbs", {
                 users: data
             })
@@ -129,11 +141,11 @@ exports.listMentors = function(req, res){
             }]
         }).then(users=>{
             let data = [];
-            for(let user of users){
+            users.map(user=> {
                 if(user.mainInf.role == "ментор"){
                     data.push(user);
                 }
-            }
+            })
             res.render("admin.hbs", {
                 users: data
             })
