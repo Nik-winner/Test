@@ -26,7 +26,7 @@ LessonsDate = db.define("lessonsDate", {
             throw new Error("Don't do it!")
         }
     },
-    weekDays: {
+    weekDay: {
         type: sql.VIRTUAL,
         get() {
             let fullDate = new Date(this.date)

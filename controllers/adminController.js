@@ -39,12 +39,12 @@ exports.attendance = function(req, res){
     sql.transaction(async (t)=>{
         return await Lesson.findByPk(lessonId).then(lesson=>{
             if(!lesson) return console.log("Lesson not found");
-            console.log(lesson)
             let students = [];
             let attendance = [];
             let weekDays = [];
             return Promise.all([
                 lesson.getMainInfs().then(users=>{
+                    console.log(users)
                     users.map(user =>{
                         MainInf.findOne({
                             where: {id: user.id},
@@ -64,13 +64,22 @@ exports.attendance = function(req, res){
                     dates.map(date=>{
                         weekDays.push(date)
                     })
+                    weekDays.sort(function(a, b) {
+                        let dayA = new Date(a.date);
+                        let dayB = new Date(b.date);
+                        return dayA.getDay() - dayB.getDay()
+                    })
+                    let sunday = weekDays.find(i => i.weekDay === `ВС`)
+                    weekDays.splice(0, 1)
+                    weekDays.push(sunday)
                 }).catch(err=>{console.log(err)})
-            ]).then(
+            ]).then(result=>{
                 res.render("attendance.hbs", {
                     students: students,
                     dates: weekDays,
                     attendances: attendance
                 })
+            }
             ).catch(err=>{console.log(err)})
         }).catch(err=>{console.log(err)})
     })
