@@ -27,7 +27,7 @@
             <div class="users_attendance">
                 <div class="students">
                     {{#each students}}
-                        <div class="cell">
+                        <div class="cell_students">
                             <div class="cont_stud">{{this.login}}</div>
                             <div class="cont_stud">{{this.userInf.surname}}</div>
                             <div class="cont_stud">({{this.password}})</div>
@@ -36,7 +36,9 @@
                 </div>
                 <div class="attendance">
                     {{#each attendances}}
-                        <div class="attend">{{check}}</div>
+                        <div class="cell_attendance">
+                            <div class="attend">{{check}}</div>
+                        </div>
                     {{/each}}
                 </div>
             </div>

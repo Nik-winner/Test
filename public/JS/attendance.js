@@ -1,1 +1,1 @@
-let attend = document.getElementsByClassName("attend")
+// let attend = document.getElementsByClassName("attend")

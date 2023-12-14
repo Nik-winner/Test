@@ -131,7 +131,7 @@ a {
   border-right: 1px solid white;
 }
 
-.cell {
+.cell_students {
   border-bottom: 1px solid white;
   display: flex;
   flex-direction: column;
@@ -145,7 +145,22 @@ a {
 }
 
 .attend {
-  border-bottom: 1px solid white;
+  border: 1px solid white;
+  width: 40%;
+  height: 40%;
+  background-color: rgb(94, 85, 130);
+}
+
+.attend_check {
+  background-color: rgb(94, 85, 130);
+}
+
+.cell_attendance {
+  border-right: 1px white solid;
+  border-bottom: 1px white solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .users_attendance {

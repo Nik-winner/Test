@@ -44,7 +44,7 @@ exports.attendance = function(req, res){
             let weekDays = [];
             return Promise.all([
                 lesson.getMainInfs().then(users=>{
-                    console.log(users)
+                    console.log(`array lenght ${users.length}`)
                     users.map(user =>{
                         MainInf.findOne({
                             where: {id: user.id},
@@ -57,7 +57,9 @@ exports.attendance = function(req, res){
                         }).then(student=>{
                             students.push(student)
                         }).catch(err=>{console.log(err)});
-                        attendance.push(user.attendances.check)
+                        for(let  i = 0; i < 7; i++){
+                            attendance.push(user.attendances.check)
+                        }
                     })
                 }).catch(err=>{console.log(err)}),
                 lesson.getLessonsDates().then(dates=>{
@@ -73,13 +75,11 @@ exports.attendance = function(req, res){
                     weekDays.splice(0, 1)
                     weekDays.push(sunday)
                 }).catch(err=>{console.log(err)})
-            ]).then(result=>{
-                res.render("attendance.hbs", {
+            ]).then(res.render("attendance.hbs", {
                     students: students,
                     dates: weekDays,
                     attendances: attendance
                 })
-            }
             ).catch(err=>{console.log(err)})
         }).catch(err=>{console.log(err)})
     })
