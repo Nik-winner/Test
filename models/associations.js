@@ -10,8 +10,8 @@ MainInf.belongsToMany(Lesson, {through: Attendance});
 
 Lesson.hasMany(Attendance, {onDelete: "cascade"});
 Attendance.belongsTo(Lesson, {onDelete: "cascade"});
-MainInf.hasMany(Attendance, {onDelete: "cascade"});
 
+MainInf.hasMany(Attendance, {onDelete: "cascade"});
 Attendance.belongsTo(MainInf, {onDelete: "cascade"})
 
 UserInf.hasOne(MainInf, {onDelete: "cascade"});

@@ -148,10 +148,21 @@ a {
   border: 1px solid white;
   width: 40%;
   height: 40%;
+}
+
+.attend_check0 {
   background-color: rgb(94, 85, 130);
 }
 
-.attend_check {
+.attend_check1 {
+  background-color: rgb(94, 85, 130);
+}
+
+.attend_check2 {
+  background-color: rgb(94, 85, 130);
+}
+
+.attend_check3 {
   background-color: rgb(94, 85, 130);
 }
 

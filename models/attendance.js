@@ -10,7 +10,10 @@ const Attendance = db.define("attendances", {
     },
     check: {
         type: sql.INTEGER,
-        allowNull: true
+        allowNull: false,
+        validate: {
+            isIn: [[0, 1, 2, 3]]
+        }
     }
 })
 

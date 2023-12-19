@@ -37,13 +37,15 @@
                 <div class="attendance">
                     {{#each attendances}}
                         <div class="cell_attendance">
-                            <div class="attend">{{check}}</div>
+                            <div class="attend" >
+                                <span class="check" hidden>{{check}}</span>
+                            </div>
                         </div>
                     {{/each}}
                 </div>
             </div>
         </div>
     </main>
-    <script src="../JS/attendance.js"></script>
+    <script src="/JS/attendance.js"></script>
 </body>
 </html>

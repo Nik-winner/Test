@@ -44,7 +44,6 @@ exports.attendance = function(req, res){
             let weekDays = [];
             return Promise.all([
                 lesson.getMainInfs().then(users=>{
-                    console.log(`array lenght ${users.length}`)
                     users.map(user =>{
                         MainInf.findOne({
                             where: {id: user.id},
@@ -58,7 +57,7 @@ exports.attendance = function(req, res){
                             students.push(student)
                         }).catch(err=>{console.log(err)});
                         for(let  i = 0; i < 7; i++){
-                            attendance.push(user.attendances.check)
+                            attendance.push(user.attendances)
                         }
                     })
                 }).catch(err=>{console.log(err)}),
