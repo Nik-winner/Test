@@ -23,16 +23,15 @@ function switchCheck(condition, item){
     }
 }
 
-attends.forEach(function(e){
-    e.addEventListener('click', ()=>{
-        let check = e.firstChild.innerHTML
-        e.classList.remove(e.classList[1]);
-        if(check < 3){
-            check++
-            switchCheck(check, e)
-        } else{
-            check = 0
-            switchCheck(check, e)
-        }
-    })
-})
+// attends.forEach(function(e){
+//     e.addEventListener('click', ()=>{
+//         e.classList.remove(e.classList[1]);
+//         if(e.firstChild.innerHTML < 3){
+//             e.firstChild.innerHTML++
+//             switchCheck(e.firstChild.innerHTML, e)
+//         } else{
+//             e.firstChild.innerHTML = 1
+//             switchCheck(e.firstChild.innerHTML, e)
+//         }
+//     })
+// })
