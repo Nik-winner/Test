@@ -3,8 +3,9 @@ const UserInf = require("../models/userInf.js");
 const MainInf = require("../models/mainInf.js");
 const Lesson = require("../models/lesson.js");
 const Branch = require("../models/branch.js");
+const LessonsDate = require("../models/lessonsDate.js");
+const Attendance = require("../models/attendance");
 const associations = require("../models/associations.js");
-const LessonsDate = require("../models/lessonsDate.js")
 
 exports.create = function(req, res){
     res.render("create.hbs")
@@ -27,7 +28,7 @@ exports.lessons = function(req, res){
             if(!branch) return console.log("Branch not found");
             let myLessons = [];
             return branch.getLessons().then(lessons=>{
-                return Promise.all(lessons.map(lesson=>{
+                lessons.map(lesson=>{
                     lesson.getLessonsDates().then(dates=>{
                         class MyLesson {
                             constructor(date, mentor, id){
@@ -35,36 +36,20 @@ exports.lessons = function(req, res){
                                 this.mentor = mentor;
                                 this.id = id
                             }
-                            getWeek(){
-                                let fullDate = new Date(Date.parse(this.date))
-                                let day = fullDate.getDate()
-                                let month = fullDate.getMonth() + 1
-                                let endDay = fullDate.setDate(fullDate.getDate() + 7)
-                                let lastDay = new Date(endDay).getDate()
-                                let nextMonth = new Date(endDay).getMonth() + 1
-                                let date = [
-                                    "0" + day,
-                                    '0' + month,
-                                    '0' + lastDay,
-                                    '0' + nextMonth].map(d => d.slice(-2))
-                                return date.slice(0, 2).join(".") + '-' + date.slice(2).join('.')
-                            }
                         }
                         dates.forEach(d=>{
                             let date = d.date;
                             let monday = new Date(Date.parse(date)).getDay()
-                            console.log(monday)
                             if(monday == 1){
-                                let lsn = new MyLesson(d.date, lesson.mentor, lesson.id);
-                                console.log(lsn)
+                                let lsn = new MyLesson(d.getWeek, lesson.mentor, lesson.id);
                                 myLessons.push(lsn)
                             }
                         })
                     }).catch(err=>{console.log(err)})
-                })).then(
-                    res.render("lessons.hbs", {
+                })
+                res.render("lessons.hbs", {
                     lessons: myLessons
-                })).catch(err=>{console.log(err)})
+                })
             }).catch(err=>{console.log(err)})
         }).catch(err=>{console.log(err)})
     })
@@ -73,61 +58,48 @@ exports.lessons = function(req, res){
 exports.attendance = function(req, res){
     let lessonId = req.params["id"];
     sql.transaction(async (t)=>{
-        return await Lesson.findByPk(lessonId).then(lesson=>{
-            if(!lesson) return console.log("Lesson not found");
-            console.log(lesson)
-            return lesson.getMainInfs().then(users=>{
-                let students = [];
-                let attendance = [];
-                let weekDays = [];
-                for(let u of users){
-                    console.log(u)
-                }
-                users.map(user =>{
-                    console.log(user)
-                    MainInf.findOne({
-                        where: {id: user.id},
-                        transaction: t,
-                        attributes: ["login", "password"],
-                        include: [{
-                            model: UserInf,
-                            attributes: ["surname"]
-                        }]
-                    }).then(student=>{
-                        students.push(student)
-                    }).catch(err=>{console.log(err)});
-                    attendance.push(user.attendance)
-                })
-                for(let st of students){
-                    if(!st){
-                        console.log("students is empty" + st)
-                    }else console.log(`${students} contains ${st}`)
-                }
-                for(let at of attendance){
-                    if(!at){
-                        console.log("attendance is empty" + at)
-                    }else console.log(`${attendance} contains ${at}`)
-                }
-                res.render("attendance.hbs", {
-                    students: students,
-                    dates: weekDays,
-                    attendances: attendance
+        return await sql.transaction(async(t1)=>{
+            return await Lesson.findByPk(lessonId).then(lesson=>{
+                if(!lesson) return console.log("Lesson not found");
+                return lesson.getLessonsDates().then(dates=>{
+                    let students = new Set();
+                    let attendance = [];
+                    let days = [];
+                    dates.map(date=>{
+                        Promise.allSettled([
+                            date.getAttendances({transaction: t}).then(attendances=>{
+                                // console.log(attendances.length)
+                                if(!attendances) return console.log("Attendance on found")
+                                attendance.forEach(attend=>{
+                                    attendance.push(attend)
+                                })
+                            }),
+                            date.getMainInfs().then(users=>{
+                                let userIds = new Set(users.map(user=> user.id))
+                                for(let userId of userIds){
+                                    MainInf.findOne({
+                                        where: {id: userId},
+                                        attributes: ['login', 'password'],
+                                        include: [{
+                                            model: UserInf,
+                                            attributes: ['surname']
+                                        }]
+                                    }).then(student=>{
+                                        students.add(student)
+                                    }).catch(err=>{console.log(err)})
+                                }
+                            })
+                        ])
+                        days.push(date)
+                    })
+                    res.render("attendance.hbs", {
+                        students: students,
+                        dates: days,
+                        attendances: attendance
+                    })
                 })
             }).catch(err=>{console.log(err)})
-            // lesson.getLessonsDates().then(dates=>{
-            //     dates.map(date=>{
-            //         weekDays.push(date)
-            //     })
-            //     weekDays.sort(function(a, b) {
-            //         let dayA = new Date(a.date);
-            //         let dayB = new Date(b.date);
-            //         return dayA.getDay() - dayB.getDay()
-            //     })
-            //     let sunday = weekDays.find(i => i.weekDay === `ВС`)
-            //     weekDays.splice(0, 1)
-            //     weekDays.push(sunday)
-            // }).catch(err=>{console.log(err)})
-        }).catch(err=>{console.log(err)})
+        })
     })
 }
 

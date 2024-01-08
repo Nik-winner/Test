@@ -12,7 +12,7 @@
         <div class="table">
             {{#each lessons}}
                 <div class="table_item">
-                    <div class="les_item">Дата: {{this.getWeek}}</div>
+                    <div class="les_item">Дата: {{this.date}}</div>
                     <div class="les_item">Ментор: {{this.mentor}}</div>
                     <div class="les_item">
                         <form action="/admin/attendance/{{this.id}}" method="POST" class="cont_les">
