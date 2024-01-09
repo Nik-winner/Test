@@ -24,34 +24,43 @@ exports.branch = function(req, res){
 exports.lessons = function(req, res){
     let branchName = req.params["name"]
     sql.transaction(async (t)=>{
-        return await Branch.findOne({where: {name: branchName}}).then(branch=>{
-            if(!branch) return console.log("Branch not found");
-            let myLessons = [];
-            return branch.getLessons().then(lessons=>{
-                lessons.map(lesson=>{
-                    lesson.getLessonsDates().then(dates=>{
-                        class MyLesson {
-                            constructor(date, mentor, id){
-                                this.date = date;
-                                this.mentor = mentor;
-                                this.id = id
-                            }
+        return await sql.transaction(async(t1)=>{
+            return await Branch.findOne({where: {name: branchName}}).then(branch=>{
+                if(!branch) return console.log("Branch not found");
+                let myLessons = [];
+                return branch.getLessons().then(lessons=>{
+                    class MyLesson {
+                        constructor(date, mentor, id){
+                            this.date = date;
+                            this.mentor = mentor;
+                            this.id = id
                         }
-                        dates.forEach(d=>{
-                            let date = d.date;
-                            let monday = new Date(Date.parse(date)).getDay()
-                            if(monday == 1){
-                                let lsn = new MyLesson(d.getWeek, lesson.mentor, lesson.id);
-                                myLessons.push(lsn)
+                    }
+                    lessons.map(lesson=>{
+                        lesson.getAttendances().then(attendances=>{
+                            let set = new Set(attendances.map(attend=> attend.lessonsDateId));
+                            for(let el of set){
+                                LessonsDate.findOne({
+                                    where: {id: el},
+                                    transaction: t
+                                }).then(d=>{
+                                    let date = d.date
+                                    let monday = new Date(Date.parse(date)).getDay()
+                                    if(monday == 1){
+                                        let lsn = new MyLesson(d.getWeek, lesson.mentor, lesson.id);
+                                        myLessons.push(lsn)
+                                    }
+                                }).catch(err=>{console.log(err)})
                             }
                         })
-                    }).catch(err=>{console.log(err)})
-                })
-                res.render("lessons.hbs", {
-                    lessons: myLessons
-                })
+                    })
+                    res.render("lessons.hbs", {
+                        lessons: myLessons
+                    })
+                }).catch(err=>{console.log(err)})
             }).catch(err=>{console.log(err)})
-        }).catch(err=>{console.log(err)})
+        })
+                
     })
 }
 
@@ -61,42 +70,11 @@ exports.attendance = function(req, res){
         return await sql.transaction(async(t1)=>{
             return await Lesson.findByPk(lessonId).then(lesson=>{
                 if(!lesson) return console.log("Lesson not found");
-                return lesson.getLessonsDates().then(dates=>{
-                    let students = new Set();
-                    let attendance = [];
-                    let days = [];
-                    dates.map(date=>{
-                        Promise.allSettled([
-                            date.getAttendances({transaction: t}).then(attendances=>{
-                                // console.log(attendances.length)
-                                if(!attendances) return console.log("Attendance on found")
-                                attendance.forEach(attend=>{
-                                    attendance.push(attend)
-                                })
-                            }),
-                            date.getMainInfs().then(users=>{
-                                let userIds = new Set(users.map(user=> user.id))
-                                for(let userId of userIds){
-                                    MainInf.findOne({
-                                        where: {id: userId},
-                                        attributes: ['login', 'password'],
-                                        include: [{
-                                            model: UserInf,
-                                            attributes: ['surname']
-                                        }]
-                                    }).then(student=>{
-                                        students.add(student)
-                                    }).catch(err=>{console.log(err)})
-                                }
-                            })
-                        ])
-                        days.push(date)
-                    })
-                    res.render("attendance.hbs", {
-                        students: students,
-                        dates: days,
-                        attendances: attendance
-                    })
+                let students = [];
+                let attendance = [];
+                let days = [];
+                return lesson.getMainInfs({raw: true}).then(users=>{
+                    console.log(users.length)
                 })
             }).catch(err=>{console.log(err)})
         })
