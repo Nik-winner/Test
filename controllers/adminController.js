@@ -67,17 +67,85 @@ exports.lessons = function(req, res){
 exports.attendance = function(req, res){
     let lessonId = req.params["id"];
     sql.transaction(async (t)=>{
-        return await sql.transaction(async(t1)=>{
-            return await Lesson.findByPk(lessonId).then(lesson=>{
-                if(!lesson) return console.log("Lesson not found");
-                let students = [];
-                let attendance = [];
-                let days = [];
-                return lesson.getMainInfs({raw: true}).then(users=>{
-                    console.log(users.length)
-                })
-            }).catch(err=>{console.log(err)})
-        })
+        return await Lesson.findAll({
+            where: {id: lessonId},
+            attributes: [],
+            raw: true,
+            include: [{
+                model: Attendance,
+                attributes: ["check"],
+                include: [{
+                    model: LessonsDate,
+                    attributes: ["date"]
+                }, {
+                    model: MainInf,
+                    attributes: ['login', 'password'],
+                    include: [{
+                        model: UserInf,
+                        attributes: ['surname']
+                    }]
+                }]
+            }]
+        }).then(data=>{
+            let students = [];
+            let attendance = [];
+            let days = [];
+            let uniqueUser = new Set();
+            let uniqueDate = new Set();
+            class MyDate {
+                constructor(date){
+                    this.date = date
+                }
+                get shortDate() {
+                    let fullDate = new Date(Date.parse(this.date))
+                    let day = fullDate.getDate()
+                    let month = fullDate.getMonth() + 1
+                    let date = ["0" + day, '0' + month].map(d => d.slice(-2))
+                    return date.slice(0, 2).join(".")
+                }
+                get weekDay() {
+                    let fullDate = new Date(Date.parse(this.date))
+                    let weekDays = ['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ']
+                    return weekDays[fullDate.getDay()]
+                }
+            }
+            class Student {
+                constructor(login, surname, password){
+                    this.login = login,
+                    this.surname = surname,
+                    this.password = password
+                }
+            }
+            class MyAttendance {
+                constructor(check, userId){
+                    this.check = check,
+                    this.userId = userId
+                }
+            }
+            data.map(d=>{
+                let attend = new MyAttendance(d["attendances.check"], d['attendances.mainInf.id'])
+                attendance.push(attend);
+                if(uniqueDate.has(d['attendances.lessonsDate.id']) === false){
+                    uniqueDate.add(d['attendances.lessonsDate.id'])
+                    let date = new MyDate(d["attendances.lessonsDate.date"])
+                    days.push(date)
+                }
+                if(uniqueUser.has(d['attendances.mainInf.id']) === false){
+                    uniqueUser.add(d['attendances.mainInf.id'])
+                    let login = d['attendances.mainInf.login'];
+                    let surname = d['attendances.mainInf.userInf.surname']
+                    let password = d['attendances.mainInf.password']
+                    let student = new Student(login, surname, password);
+                    students.push(student)
+                }
+            })
+            attendance.sort((a, b)=> a.userId - b.userId)
+            res.render("attendance.hbs", {
+                students: students,
+                attendances: attendance,
+                dates: days
+            })
+        }).catch(err=>{console.log(err)})
     })
 }
 
